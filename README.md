@@ -1,4 +1,7 @@
-# Projet development collaboratif DevOps
+# Projet de development collaboratif DevOps
 
-> [!NOTE]
-> WIP
+> [!info]
+> TO DO
+
+> [!important]
+> Have fun ! 🚀
