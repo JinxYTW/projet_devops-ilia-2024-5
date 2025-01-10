@@ -1,3 +1,4 @@
+openapi: 3.0.3
 info:
   title: Swagger Petstore - OpenAPI 3.0
   description: |-
@@ -8,3 +9,59 @@ tags:
   - name: tweet
     description: Everything about the tweets
 paths:
+  /retweet/{tweetId}:
+    post:
+      tags:
+        - tweet
+      summary: Retweet a tweet
+      description: Retweet a tweet
+      operationId: retweetTweet
+      parameters:
+        - name: tweetId
+          in: path
+          description: ID of tweet to retweet
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tweet retweeted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tweet retweeted
+        '400':
+          description: Invalid tweet ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid tweet ID
+        '404':
+          description: Tweet not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tweet not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
