@@ -65,3 +65,37 @@ paths:
                   message:
                     type: string
                     example: Internal server error
+  /info:
+    get:
+      tags:
+        - tweet
+      summary: Get microservice information
+      description: Retrieve information about the microservice
+      operationId: getMicroserviceInfo
+      responses:
+        '200':
+          description: Microservice information retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Swagger Tweet
+                  build:
+                    type: string
+                    example: 1.0.0
+                  version:
+                    type: string
+                    example: 0.0.1
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
