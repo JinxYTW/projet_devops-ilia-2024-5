@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Swagger Petstore - OpenAPI 3.0
+  title: Swagger Tweet 
   description: |-
     This microservice is responsible for managing tweets.
     It allows you to create and readtweets as well as retweet.
