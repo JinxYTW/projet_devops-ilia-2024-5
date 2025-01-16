@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
+
+
 
 load_dotenv()
 
@@ -12,11 +15,22 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///app.db")  # URL à modifier 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret")
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)  # 15 minutes
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=1)  # Session maximale d'une journée
+app.config['JWT_TOKEN_LOCATION'] = ['headers']  # Permet de vérifier les tokens dans les headers
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False  # Désactiver la protection CSRF si inutile pour API publique
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
+
+# Callback pour rafraîchir automatiquement les tokens à chaque requête
+@jwt_required()
+def refresh_token_if_needed():
+    current_user = get_jwt_identity()
+    # Réémettre un token d'accès
+    new_token = create_access_token(identity=current_user)
+    return jsonify({"new_token": new_token}), 200
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -82,7 +96,6 @@ def login():
     if not username_or_email or not password:
         return jsonify({"message": "Nom d'utilisateur ou mot de passe requis"}), 400
 
-    # Recherche de l'utilisateur dans la base de données
     user = User.query.filter((User.username == username_or_email) | (User.email == username_or_email)).first()
     if user and user.password == password:
         access_token = create_access_token(identity=user.username)
@@ -100,25 +113,31 @@ def get_user(username):
     return jsonify(user.basic_info()), 200
 
 #--------------GET PRIVATE INFO--------------------
+
 @app.route("/users/information/<string:username>", methods=["GET"])
+@jwt_required() 
 def get_user_info(username):
-    token = request.headers.get("Authorization")
-    if not token:
-        return jsonify({"message": "Token manquant"}), 401
     
+    current_user = get_jwt_identity()
+    if current_user != username:
+        return jsonify({"message": "Accès non autorisé"}), 403
+
     user = User.query.filter_by(username=username).first()
     if not user:
         return jsonify({"message": "Utilisateur non trouvé"}), 404
 
     return jsonify(user.to_dict()), 200
 
+
 #--------------DELETE-------------------- 
 
 @app.route("/users/<string:username>", methods=["DELETE"])
+@jwt_required() 
 def delete_user(username):
-    token = request.headers.get("Authorization")
-    if not token:
-        return jsonify({"message": "Token manquant"}), 401
+
+    current_user = get_jwt_identity()
+    if current_user != username:
+        return jsonify({"message": "Accès non autorisé"}), 403
 
     user = User.query.filter_by(username=username).first()
     if not user:
@@ -131,11 +150,13 @@ def delete_user(username):
 #--------------UPDATE--------------------
 
 @app.route("/users/<string:username>", methods=["PUT"])
+@jwt_required() 
 def update_user(username):
+    current_user = get_jwt_identity()
+    if current_user != username:
+        return jsonify({"message": "Accès non autorisé"}), 403
+    
     data = request.get_json()
-    token = request.headers.get("Authorization")
-    if not token:
-        return jsonify({"message": "Token manquant"}), 401
 
     user = User.query.filter_by(username=username).first()
     if not user:
