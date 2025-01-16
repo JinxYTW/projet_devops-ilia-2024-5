@@ -146,12 +146,6 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
       "message": "Réaction supprimée avec succès."
     }
     ```
-    {
-      "like": 10,  // Par exemple, 10 Likes
-      "love": 5,   // Par exemple, 5 Love
-      "haha": 8    // Par exemple, 8 Haha
-    }
-    ```
 
 #### Récupérer les statistiques de réactions sur un commentaire
 - **Route** : `GET /comments/{commentId}/reactions/stats`
