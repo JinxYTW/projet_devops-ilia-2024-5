@@ -1,4 +1,4 @@
-name: TDD Profile Page Workflow
+name: TDD Tweet Page Workflow
 
 on:
   push:
