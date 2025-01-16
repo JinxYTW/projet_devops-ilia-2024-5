@@ -179,7 +179,7 @@ Les types de réactions sont :
 - love
 - haha
 - sad
-- anger
+- angry
 
 ## Conclusion
 
