@@ -3,10 +3,10 @@ name: TDD Profile Page Workflow
 on:
   push:
     branches:
-      - main
+      - 18-réalisation-de-la-page-du-profil-pour-le-front
   pull_request:
     branches:
-      - main
+      - 18-réalisation-de-la-page-du-profil-pour-le-front
 
 jobs:
   test:
