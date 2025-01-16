@@ -55,7 +55,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```json
     {
       "userId": "12345",
-      "reaction": "A"  // Par exemple, "A" pour "Like", "B" pour "Love", "C" pour "Haha", etc.
+      "reaction": "like"
     }
     ```
 
@@ -66,7 +66,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```json
     {
       "userId": "12345",
-      "reaction": "B"  // Par exemple, "A" pour "Like", "B" pour "Love", "C" pour "Haha", etc.
+      "reaction": "love"
     }
     ```
 
@@ -79,7 +79,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
       {
         "reactionId": "11111",
         "userId": "12345",
-        "reaction": "A",
+        "reaction": "haha",
         "timestamp": "2023-01-10T12:45:00Z"
       }
     ]
@@ -94,7 +94,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
       {
         "reactionId": "22222",
         "userId": "67890",
-        "reaction": "B",
+        "reaction": "love",
         "timestamp": "2023-01-10T12:50:00Z"
       }
     ]
@@ -127,6 +127,12 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 - **Description** : Récupère des statistiques sur les différentes réactions (nombre de chaque type de réaction) d’un tweet.
 - **Réponse** :
     ```json
+    {
+      "like": 3,
+      "love": 1
+    }
+    ```
+
 #### Supprimer une réaction sur un tweet
 - **Route** : `DELETE /tweets/{tweetId}/reactions/{reactionId}`
 - **Description** : Permet à un utilisateur de supprimer une réaction sur un tweet.
@@ -146,12 +152,6 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
       "message": "Réaction supprimée avec succès."
     }
     ```
-    {
-      "A": 10,  // Par exemple, 10 Likes
-      "B": 5,   // Par exemple, 5 Love
-      "C": 8    // Par exemple, 8 Haha
-    }
-    ```
 
 #### Récupérer les statistiques de réactions sur un commentaire
 - **Route** : `GET /comments/{commentId}/reactions/stats`
@@ -159,8 +159,8 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 - **Réponse** :
     ```json
     {
-      "A": 3,
-      "B": 1
+      "like": 3,
+      "love": 1
     }
     ```
 
@@ -173,21 +173,151 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```json
     {
       "hasReacted": true,
-      "reaction": "A"
+      "reaction": "like"
     }
     ```
 
 ## Types de Réactions
 
-Les types de réactions sont définis par des lettres (A, B, C, etc.) pour chaque type :
+Les types de réactions sont :
 
-- **A** : Like
-- **B** : Love
-- **C** : Haha
-- **D** : Triste
-- **E** : En colère
+- like
+- love
+- haha
+- sad
+- angry
 
 ## Conclusion
 
 Cette API permet de gérer les interactions autour des tweets et des commentaires, en offrant des fonctionnalités de commentaires, réactions et statistiques. Elle est conçue pour être rapide et efficace, en permettant des opérations en temps réel avec un modèle de données flexible.
+
+
+
+############################################ BD ################################################
+# Proposition de Structure de Base de Données Redis pour le Micro-Service de Réactions Twitter
+
+#### **1. Structure des Données**
+
+
+
+##### **1.1. Commenter un twett**
+- **Clés** :
+  - `tweet:{tweet_id}:comments` (liste ordonnée des IDs de commentaires)
+  - `comment:{comment_id}` (détails d'un commentaire)
+- **Type** : *List* pour `tweet:{tweet_id}:comments`, *Hash* pour `comment:{comment_id}`
+- **Données** :
+  - Liste des commentaires :
+    ```
+    ["comment123", "comment124", "comment125"]
+    ```
+  - Détails d'un commentaire :
+    ```json
+    {
+      "author_id": "user456",
+      "content": "Ceci est un commentaire.",
+      "parent_comment_id": null, 
+      "created_at": "2025-01-10T10:05:00Z",
+      "like_count": 5
+    }
+    ```
+
+##### **1.2. Commenter un commentaires**
+- **Clés** :
+  - `comment:{command_id}:comments` (liste ordonnée des IDs de commentaires)
+  - `comment:{comment_id}` (détails d'un commentaire)
+- **Type** : *List* pour `comment:{command_id}:comments`, *Hash* pour `comment:{comment_id}`
+- **Données** :
+  - Liste des commentaires :
+    ```
+    ["comment123", "comment124", "comment125"]
+    ```
+  - Détails d'un commentaire :
+    ```json
+    {
+      "author_id": "user456",
+      "content": "Ceci est un commentaire.",
+      "parent_comment_id": "command123", 
+      "created_at": "2025-01-10T10:05:00Z",
+      "like_count": 5
+    }
+    ```
+
+
+
+---
+##### **1.3. Réactions aux Tweets**
+- **Clé** : `tweet:{tweet_id}:reactions_stat`
+- **Type** : *Hash*
+- **Données** :
+```json
+{
+  "like": 20,
+  "love": 5,
+  "haha": 2,
+  "sad": 1
+}
+```
+
+
+---
+##### **1.4. Réactions aux Commentaires**
+- **Clé** : `comment:{comment_id}:reactions_stat`
+- **Type** : *Hash*
+- **Données** :
+```json
+{
+  "like": 10,
+  "angry": 1
+}
+```
+
+---
+##### **1.5. Utilisateurs ayant Réagi**
+- **Clés** :
+  - `tweet:{tweet_id}:reactions` ou `comment:{comment_id}:reactions` (liste ordonnée des IDs de réactions)
+  - `reaction:{reaction_id}` (détails d'une réaction)
+- **Type** : *Set*
+- **Valeurs** :
+```
+["reaction123", "reaction456"]
+```
+- Détails d'une reaction :
+    ```json
+    {
+      "reacted_user": "user456",
+      "type": "haha", "love", "like"...,
+      "created_at": "2025-01-10T10:05:00Z"
+    }
+    ```
+
+#### **2. Cas d'Usage et Opérations**
+
+1. **Ajouter un like à un tweet** :
+   - Générer un `reaction_id`.
+   - Incrémenter `like` dans `tweet:{tweet_id}:reactions_stat`.
+   - Ajouter `reaction_id` dans `tweet:{tweet_id}:reactions` pour vérification.
+   - Stocker les détails de la réaction `reaction:{reaction_id}`  
+
+2. **Ajouter un commentaire à un tweet** :
+   - Générer un `comment_id`.
+   - Ajouter l'ID à `tweet:{tweet_id}:comments`.
+   - Stocker les détails dans `comment:{comment_id}`.
+
+3. **Réagir à un commentaire** :
+   - Générer un `reaction_id`.
+   - Incrémenter la réaction dans `comment:{comment_id}:reactions`.
+   - Ajouter `reaction_id` dans `comment:{comment_id}:reactions`.
+   - Stocker les détails du réaction `reaction:{reaction_id}`
+
+4. **Ajouter un commentaire à un commentaire** :
+   - Générer un `comment_id`.
+   - Ajouter l'ID à `command:{command_id}:comments`.
+   - Stocker les détails dans `comment:{comment_id}`.
+
+5. **Obtenir un fil de discussion** :
+   - Charger `tweet:{tweet_id}:comments`.
+   - Charger chaque `comment:{comment_id}` et rechercher les sous-commentaires via `parent_comment_id`.
+
+
+
 
