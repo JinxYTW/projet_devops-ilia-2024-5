@@ -191,3 +191,104 @@ Les types de réactions sont définis par des lettres (A, B, C, etc.) pour chaqu
 
 Cette API permet de gérer les interactions autour des tweets et des commentaires, en offrant des fonctionnalités de commentaires, réactions et statistiques. Elle est conçue pour être rapide et efficace, en permettant des opérations en temps réel avec un modèle de données flexible.
 
+
+
+##################################################################################################### BD ##################################################################################################
+### Proposition de Structure de Base de Données Redis pour le Micro-Service de Réactions Twitter
+
+#### **1. Structure des Données**
+
+---
+##### **1.1. Tweets**
+- **Clé** : `tweet:{tweet_id}`
+- **Type** : *Hash*
+- **Données** :
+```json
+{
+  "author_id": "user123",
+  "content": "Ceci est un tweet.",
+  "created_at": "2025-01-10T10:00:00Z",
+  "like_count": 15,
+  "comment_count": 3
+}
+```
+
+---
+##### **1.2. Réactions aux Tweets**
+- **Clé** : `tweet:{tweet_id}:reactions`
+- **Type** : *Hash*
+- **Données** :
+```json
+{
+  "like": 20,
+  "love": 5,
+  "haha": 2,
+  "sad": 1
+}
+```
+
+---
+##### **1.3. Commentaires**
+- **Clés** :
+  - `tweet:{tweet_id}:comments` (liste ordonnée des IDs de commentaires)
+  - `comment:{comment_id}` (détails d'un commentaire)
+- **Type** : *List* pour `tweet:{tweet_id}:comments`, *Hash* pour `comment:{comment_id}`
+- **Données** :
+  - Liste des commentaires :
+    ```
+    ["comment123", "comment124", "comment125"]
+    ```
+  - Détails d'un commentaire :
+    ```json
+    {
+      "author_id": "user456",
+      "content": "Ceci est un commentaire.",
+      "parent_comment_id": null, 
+      "created_at": "2025-01-10T10:05:00Z",
+      "like_count": 5
+    }
+    ```
+
+---
+##### **1.4. Réactions aux Commentaires**
+- **Clé** : `comment:{comment_id}:reactions`
+- **Type** : *Hash*
+- **Données** :
+```json
+{
+  "like": 10,
+  "angry": 1
+}
+```
+
+---
+##### **1.5. Utilisateurs ayant Réagi**
+- **Clé** : `tweet:{tweet_id}:reacted_users` ou `comment:{comment_id}:reacted_users`
+- **Type** : *Set*
+- **Valeurs** :
+```
+["user123", "user456"]
+```
+
+#### **2. Cas d'Usage et Opérations**
+
+1. **Ajouter un like à un tweet** :
+   - Incrémenter `like` dans `tweet:{tweet_id}:reactions`.
+   - Ajouter l'utilisateur à `tweet:{tweet_id}:reacted_users` pour vérification.
+
+2. **Ajouter un commentaire** :
+   - Générer un `comment_id`.
+   - Ajouter l'ID à `tweet:{tweet_id}:comments`.
+   - Stocker les détails dans `comment:{comment_id}`.
+
+3. **Réagir à un commentaire** :
+   - Incrémenter la réaction dans `comment:{comment_id}:reactions`.
+   - Ajouter l'utilisateur à `comment:{comment_id}:reacted_users`.
+
+4. **Obtenir un fil de discussion** :
+   - Charger `tweet:{tweet_id}:comments`.
+   - Charger chaque `comment:{comment_id}` et rechercher les sous-commentaires via `parent_comment_id`.
+
+
+
+
