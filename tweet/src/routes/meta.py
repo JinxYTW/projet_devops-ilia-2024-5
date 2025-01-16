@@ -1,4 +1,5 @@
-from routes.blueprint import bp
+from flask import jsonify
+from src.routes.blueprint import bp
 from src.conf import APP_NAME, VERSION, BUILD_NUMBER
 
 @bp.route('/meta', methods=['GET'])
