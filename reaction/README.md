@@ -127,6 +127,12 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 - **Description** : Récupère des statistiques sur les différentes réactions (nombre de chaque type de réaction) d’un tweet.
 - **Réponse** :
     ```json
+    {
+      "like": 3,
+      "love": 1
+    }
+    ```
+
 #### Supprimer une réaction sur un tweet
 - **Route** : `DELETE /tweets/{tweetId}/reactions/{reactionId}`
 - **Description** : Permet à un utilisateur de supprimer une réaction sur un tweet.
