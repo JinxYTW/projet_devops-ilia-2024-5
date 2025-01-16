@@ -10,6 +10,7 @@
 
 - Docker
 - Python
+- WSL (for Windows users)
 
 ### Workflows
 
@@ -70,3 +71,15 @@ This structure ensures a clear separation of concerns, making the codebase maint
 ## Launching Swagger
 
 To start the API documentation, run `make swagger` in a terminal or execute the corresponding command from the Makefile.
+You should have wsl launched for this to work.
+
+## Error Handling
+
+### Docker x Swagger
+If you see the pet store when you launch the swagger, it means that the swagger is not able to find the correct yaml file.
+That is because docker is not able to find the correct path to the yaml file and then create a directory with the name of this yaml file.
+Only because when you are on windows, the path is different from the one that docker is expecting.
+
+> To fix this, you need to go into the *makefile* directory and then start wsl and run the command `make swagger` again.
+> You should be able to see the correct swagger documentation now.
+
