@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Swagger MP
+  description: |-
+    This microservice is responsible for managing private messages.
+    It allows you to write messages to another user privately.
+  version: 0.0.1
+tags:
+  - name: messages_prives
+    description: Everything about the private messages
+paths:
+  /MP/send/{username}:
+    post:
+      tags:
+        - messages_prives
+      summary: Send a private message
+      description: Send a private message to another user
+      operationId: sendPrivateMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The message to send
+      parameters:
+        - name: username
+          in: path
+          description: The user who receives the messages
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Message sent
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+  /MP/receive/{username}:
+    get:
+      tags:
+        - messages_prives
+      summary: Receive private messages
+      description: Receive private messages from another user
+      operationId: receivePrivateMessages
+      parameters:
+        - name: username
+          in: path
+          description: The user who receives the messages
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Messages received
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
