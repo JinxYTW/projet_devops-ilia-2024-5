@@ -27,7 +27,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
         "commentId": "67890",
         "userId": "12345",
         "content": "Ceci est un commentaire.",
-        "timestamp": "2023-01-10T12:34:56Z"
+        "created_at": "2023-01-10T12:34:56Z"
       }
     ]
     ```
@@ -45,6 +45,12 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 #### Supprimer un commentaire
 - **Route** : `DELETE /comments/{commentId}`
 - **Description** : Permet à un utilisateur de supprimer son commentaire.
+- **Réponse** :
+    ```json
+    {
+      "message": "Commentaire supprimé avec succès."
+    }
+    ```
 
 ### 2. **Réactions**
 
