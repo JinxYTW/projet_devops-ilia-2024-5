@@ -8,7 +8,7 @@ https://www.canva.com/design/DAGbz95ZbMs/avqpuTWi4BLaBe6IpbmtLQ/edit
 - Inscription (Jaurel)
 - Feed (Louis)
 - Profil (May)
-- DetailPost (<span style="color:blue">Quentin</span>)
+- DetailPost (Quentin)
 - ChoisirMP (Hatim)
 - MP (Othmane)
 - Recherche 
