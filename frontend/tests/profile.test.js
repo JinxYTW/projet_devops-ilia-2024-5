@@ -71,4 +71,4 @@ test('ajout d\'un nouveau post dans la zone de posts', () => {
   expect(screen.getByText('like')).toBeInTheDocument();
   expect(screen.getByText('commentaire')).toBeInTheDocument();
   expect(screen.getByText('partage')).toBeInTheDocument();
-});
+}); 
