@@ -174,3 +174,18 @@ body {
     top: 180px;
 
 }
+
+.liked {
+    border-color: darkred;  
+}
+
+.commented {
+
+    border-color: darkorchid
+}
+
+.shared {
+
+    border-color: rgb(250, 159, 73);
+
+}
