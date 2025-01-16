@@ -193,8 +193,8 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 
 
 
-##################################################################################################### BD ##################################################################################################
-### Proposition de Structure de Base de Données Redis pour le Micro-Service de Réactions Twitter
+############################################ BD ################################################
+# Proposition de Structure de Base de Données Redis pour le Micro-Service de Réactions Twitter
 
 #### **1. Structure des Données**
 
