@@ -1,8 +1,7 @@
 {
     "name": "frontend-tdd-example",   
     "version": "1.0.0",              
-    "description": "Exemple de TDD frontend avec GitHub Actions", 
-    "main": "src/main.js",            
+    "description": "Exemple de TDD frontend avec GitHub Actions",            
     "scripts": {                      
       "test": "jest",                 
       "test:watch": "jest --watch",   
