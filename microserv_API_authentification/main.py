@@ -5,17 +5,14 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 
-# Charger les variables d'environnement du fichier .env
 load_dotenv()
 
 app = Flask(__name__)
 
-# Configuration du secret pour JWT
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 
-# Base de données simulée
 users_db = {}
 
 
