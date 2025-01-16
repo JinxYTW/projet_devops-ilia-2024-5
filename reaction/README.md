@@ -55,7 +55,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```json
     {
       "userId": "12345",
-      "reaction": "A"  // Par exemple, "A" pour "Like", "B" pour "Love", "C" pour "Haha", etc.
+      "reaction": "like"
     }
     ```
 
@@ -66,7 +66,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```json
     {
       "userId": "12345",
-      "reaction": "B"  // Par exemple, "A" pour "Like", "B" pour "Love", "C" pour "Haha", etc.
+      "reaction": "love"
     }
     ```
 
@@ -79,7 +79,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
       {
         "reactionId": "11111",
         "userId": "12345",
-        "reaction": "A",
+        "reaction": "haha",
         "timestamp": "2023-01-10T12:45:00Z"
       }
     ]
@@ -94,7 +94,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
       {
         "reactionId": "22222",
         "userId": "67890",
-        "reaction": "B",
+        "reaction": "love",
         "timestamp": "2023-01-10T12:50:00Z"
       }
     ]
@@ -147,9 +147,9 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     }
     ```
     {
-      "A": 10,  // Par exemple, 10 Likes
-      "B": 5,   // Par exemple, 5 Love
-      "C": 8    // Par exemple, 8 Haha
+      "like": 10,  // Par exemple, 10 Likes
+      "love": 5,   // Par exemple, 5 Love
+      "haha": 8    // Par exemple, 8 Haha
     }
     ```
 
@@ -159,8 +159,8 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 - **Réponse** :
     ```json
     {
-      "A": 3,
-      "B": 1
+      "like": 3,
+      "love": 1
     }
     ```
 
@@ -173,19 +173,19 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```json
     {
       "hasReacted": true,
-      "reaction": "A"
+      "reaction": "like"
     }
     ```
 
 ## Types de Réactions
 
-Les types de réactions sont définis par des lettres (A, B, C, etc.) pour chaque type :
+Les types de réactions sont :
 
-- **A** : Like
-- **B** : Love
-- **C** : Haha
-- **D** : Triste
-- **E** : En colère
+- like
+- love
+- haha
+- sad
+- anger
 
 ## Conclusion
 
@@ -258,8 +258,8 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 - Détails d'une reaction :
     ```json
     {
-      "reacted_users": "user456",
-      "type": "haha,coeur",
+      "reacted_user": "user456",
+      "type": "haha", "love", "like"...,
       "created_at": "2025-01-10T10:05:00Z"
     }
     ```
