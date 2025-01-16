@@ -8,7 +8,7 @@
 
 ### Prerequisites
 
-- Docker
+- Docker, Please refer to the installation instructions for Docker.
 - Python
 - WSL (for Windows users)
 
