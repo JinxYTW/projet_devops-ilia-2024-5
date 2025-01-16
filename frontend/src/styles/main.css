@@ -19,15 +19,6 @@ body {
     font-size: 20px;
 }
 
-#maPhoto {
-
-    width: 75px; 
-    height: 75px; 
-    border-radius: 50%; 
-    margin-right: 10px;
-    margin-left: 10px;
-
-}
 
 #photoProfil {
     width: 100px; 
@@ -147,6 +138,39 @@ body {
     display: flex;
     flex-direction: row;
     align-items: right;
+    position: relative;
 
 }
 
+#maPhoto {
+
+    width: 75px; 
+    height: 75px; 
+    border-radius: 50%; 
+    margin-right: 10px;
+    margin-left: 10px;
+    right: 95px; 
+    top: 180px;
+}
+
+
+#suscribe {
+
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%;
+    position: absolute;
+    right: 0; 
+    top: 0;
+}
+
+#suscribeButton {
+
+    position: absolute;
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%;
+    left: 95px; 
+    top: 180px;
+
+}
