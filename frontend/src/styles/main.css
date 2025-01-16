@@ -1,11 +1,11 @@
 body {
     background-image: url('../../data/fontpotentiel.jpg');
-    background-attachment: fixed; /* L'image reste fixe pendant le défilement */
-    background-size: cover; /* L'image couvre toute la largeur de la page */
-    background-position: bottom center; /* L'image est positionnée au bas de la page */
-    background-repeat: no-repeat; /* L'image ne se répète pas */
-    height: 100vh; /* Assurez-vous que le body prend toute la hauteur de la page */
-    margin: 0; /* Enlève la marge par défaut du body */
+    background-attachment: fixed; 
+    background-size: cover; 
+    background-position: bottom center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+    margin: 0; 
     }
 
 #premierPost {
@@ -17,6 +17,16 @@ body {
     border: 1px solid rgb(226, 85, 198);
     border-radius: 15px;
     font-size: 20px;
+}
+
+#maPhoto {
+
+    width: 75px; 
+    height: 75px; 
+    border-radius: 50%; 
+    margin-right: 10px;
+    margin-left: 10px;
+
 }
 
 #photoProfil {
@@ -41,6 +51,8 @@ body {
 
 #presentation{
 
+    margin-right: 15px;
+    margin-left: 15px;
     background-color: lightgrey;
     padding: 5px;
     height: fit-content;
@@ -82,8 +94,9 @@ body {
 
 #zonePosts {
 
+    margin-left: 15px;
+    margin-right: 15px;
     border: 2px solid rgb(0, 0, 0);
-    width: 1590px;
     height: 10000px;
     padding: 15px;
     padding-top: 20px;
@@ -97,12 +110,24 @@ body {
 
 #entete {
 
+    margin-left: 15px;
+    margin-right: 15px;
     border: 2px solid rgb(0, 0, 0);
     border-radius: 15px;
     margin-bottom: 10px;
     display: flex;
     flex: row;
+    flex-direction: row;
+    justify-content: space-between; /* Espace entre le titre et le profil */
+
     padding-left: 15px;
+}
+
+#titreComplet {
+
+    display: flex;               
+    align-items: right;
+
 }
 
 #titlePolyte {
@@ -116,3 +141,12 @@ body {
     color:rgb(61, 205, 245);
 
 }
+
+#monProfil {
+
+    display: flex;
+    flex-direction: row;
+    align-items: right;
+
+}
+
