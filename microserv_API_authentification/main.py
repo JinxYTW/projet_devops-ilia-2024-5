@@ -59,6 +59,7 @@ class User(db.Model):
     
 #--------------SIGN IN--------------------
 
+
 @app.route("/auth/sign_in", methods=["POST"])
 def sign_in():
     data = request.get_json()
@@ -70,11 +71,11 @@ def sign_in():
     pseudo = data.get("pseudo")
 
     if not all([nom, prenom, email, password, username, pseudo]):
-        return jsonify({"message": "Tous les champs sont obligatoires"}), 400
+        return jsonify({"message": "Tous les champs sont obligatoires"}), 401
     if User.query.filter(User.username == username).first():
-        return jsonify({"message": "Nom d'utilisateur déjà pris"}), 400
+        return jsonify({"message": "Nom d'utilisateur déjà pris"}), 401
     if User.query.filter(User.email == email).first():
-        return jsonify({"message": "Email déjà pris"}), 400
+        return jsonify({"message": "Email déjà pris"}), 401
 
     new_user = User(nom=nom, prenom=prenom, email=email, password=password, username=username, pseudo=pseudo)
     db.session.add(new_user)
@@ -94,14 +95,48 @@ def login():
     password = data.get("password")
 
     if not username_or_email or not password:
-        return jsonify({"message": "Nom d'utilisateur ou mot de passe requis"}), 400
+        return jsonify({"message": "Nom d'utilisateur ou mot de passe requis"}), 401
 
     user = User.query.filter((User.username == username_or_email) | (User.email == username_or_email)).first()
     if user and user.password == password:
         access_token = create_access_token(identity=user.username)
         return jsonify({"token": access_token}), 200
 
-    return jsonify({"message": "Nom d'utilisateur ou mot de passe incorrect"}), 400
+    return jsonify({"message": "Nom d'utilisateur ou mot de passe incorrect"}), 401
+
+
+@app.route("/users/<userName>", methods=["GET"])
+def get_user(userName):
+    user = User.query.filter(User.username == userName).first()
+    if not user:
+        return jsonify({"message": "Utilisateur non trouvé"}), 404
+    return jsonify(user.to_dict()), 200
+
+
+@app.route("/users/<userName>", methods=["Delete"])
+def delete_user(userName):
+    user = User.query.filter(User.username == userName).first()
+    if not user:
+        return jsonify({"message": "Utilisateur non trouvé"}), 404
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"message": "Utilisateur supprimé"}), 200
+
+
+@app.route("/users/<userName>", methods=["PUT"])
+def update_user(userName):
+    user = User.query.filter(User.username == userName).first()
+    if not user:
+        return jsonify({"message": "Utilisateur non trouvé"}), 404
+    data = request.get_json()
+    user.nom = data.get("nom", user.nom)
+    user.prenom = data.get("prenom", user.prenom)
+    user.email = data.get("email", user.email)
+    user.password = data.get("password", user.password)
+    user.username = data.get("username", user.username)
+    user.pseudo = data.get("pseudo", user.pseudo)
+    db.session.commit()
+    return jsonify(user.to_dict()), 200
 
 #--------------GET INFO--------------------
 @app.route("/users/<string:username>", methods=["GET"])
