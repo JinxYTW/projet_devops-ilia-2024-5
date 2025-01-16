@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import JWTManager, create_access_token
+from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
@@ -9,14 +9,34 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///app.db")  # URL à modifier 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret")
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+
+db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
-users_db = {}
 
+class User(db.Model):
+    __tablename__ = 'users'
 
-# Endpoint pour l'inscription
+    nom = db.Column(db.String(50), nullable=False)
+    prenom = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    pseudo = db.Column(db.String(50), nullable=False)
+
+    def to_dict(self):
+        return {
+            "nom": self.nom,
+            "prenom": self.prenom,
+            "email": self.email,
+            "username": self.username,
+            "pseudo": self.pseudo
+        }
+
 @app.route("/auth/sign_in", methods=["POST"])
 def sign_in():
     data = request.get_json()
@@ -29,23 +49,17 @@ def sign_in():
 
     if not all([nom, prenom, email, password, username, pseudo]):
         return jsonify({"message": "Tous les champs sont obligatoires"}), 400
-
-    if username in users_db:
+    if User.query.filter(User.username == username).first():
         return jsonify({"message": "Nom d'utilisateur déjà pris"}), 400
+    if User.query.filter(User.email == email).first():
+        return jsonify({"message": "Email déjà pris"}), 400
 
-    user = {
-        "nom": nom,
-        "prenom": prenom,
-        "email": email,
-        "password": password,
-        "username": username,
-        "pseudo": pseudo,
-    }
+    new_user = User(nom=nom, prenom=prenom, email=email, password=password, username=username, pseudo=pseudo)
+    db.session.add(new_user)
+    db.session.commit()
 
-    users_db[username] = user
     access_token = create_access_token(identity=username)
     return jsonify({"token": access_token}), 200
-
 
 # Endpoint pour la connexion
 @app.route("/auth/login", methods=["POST"])
