@@ -198,23 +198,8 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 
 #### **1. Structure des Données**
 
----
-##### **1.1. Tweets**
-- **Clé** : `tweet:{tweet_id}`
-- **Type** : *Hash*
-- **Données** :
-```json
-{
-  "author_id": "user123",
-  "content": "Ceci est un tweet.",
-  "created_at": "2025-01-10T10:00:00Z",
-  "like_count": 15,
-  "comment_count": 3
-}
-```
 
----
-##### **1.2. Réactions aux Tweets**
+##### **1.1. Réactions aux Tweets**
 - **Clé** : `tweet:{tweet_id}:reactions`
 - **Type** : *Hash*
 - **Données** :
@@ -227,8 +212,9 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 }
 ```
 
+
 ---
-##### **1.3. Commentaires**
+##### **1.2. Commentaires**
 - **Clés** :
   - `tweet:{tweet_id}:comments` (liste ordonnée des IDs de commentaires)
   - `comment:{comment_id}` (détails d'un commentaire)
@@ -250,7 +236,7 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
     ```
 
 ---
-##### **1.4. Réactions aux Commentaires**
+##### **1.3. Réactions aux Commentaires**
 - **Clé** : `comment:{comment_id}:reactions`
 - **Type** : *Hash*
 - **Données** :
@@ -262,19 +248,29 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 ```
 
 ---
-##### **1.5. Utilisateurs ayant Réagi**
+##### **1.4. Utilisateurs ayant Réagi**
 - **Clé** : `tweet:{tweet_id}:reacted_users` ou `comment:{comment_id}:reacted_users`
 - **Type** : *Set*
 - **Valeurs** :
 ```
 ["user123", "user456"]
 ```
+- Détails d'une reaction :
+    ```json
+    {
+      "reacted_users": "user456",
+      "type": "haha,coeur",
+      "created_at": "2025-01-10T10:05:00Z"
+    }
+    ```
 
 #### **2. Cas d'Usage et Opérations**
 
 1. **Ajouter un like à un tweet** :
+   - Générer un `reaction_id`.
    - Incrémenter `like` dans `tweet:{tweet_id}:reactions`.
    - Ajouter l'utilisateur à `tweet:{tweet_id}:reacted_users` pour vérification.
+   - Stocker les détails de la réaction `reaction:{reaction_id}`  
 
 2. **Ajouter un commentaire** :
    - Générer un `comment_id`.
@@ -282,8 +278,10 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
    - Stocker les détails dans `comment:{comment_id}`.
 
 3. **Réagir à un commentaire** :
+   - Générer un `reaction_id`.
    - Incrémenter la réaction dans `comment:{comment_id}:reactions`.
    - Ajouter l'utilisateur à `comment:{comment_id}:reacted_users`.
+   - Stocker les détails du réaction `reaction:{reaction_id}`
 
 4. **Obtenir un fil de discussion** :
    - Charger `tweet:{tweet_id}:comments`.
