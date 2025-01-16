@@ -1,0 +1,118 @@
+body {
+    background-image: url('../../data/fontpotentiel.jpg');
+    background-attachment: fixed; /* L'image reste fixe pendant le défilement */
+    background-size: cover; /* L'image couvre toute la largeur de la page */
+    background-position: bottom center; /* L'image est positionnée au bas de la page */
+    background-repeat: no-repeat; /* L'image ne se répète pas */
+    height: 100vh; /* Assurez-vous que le body prend toute la hauteur de la page */
+    margin: 0; /* Enlève la marge par défaut du body */
+    }
+
+#premierPost {
+
+    background-color:rgb(231, 131, 211);
+    width: 500px;
+    height: fit-content;
+    padding: 5px;
+    border: 1px solid rgb(226, 85, 198);
+    border-radius: 15px;
+    font-size: 20px;
+}
+
+#photoProfil {
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+}
+
+#infopersos h2, #infopersos h4 {
+    margin: 0; 
+    padding: 0; 
+}
+
+#infopersos h4, #infopersosh2 {
+    margin-top: 5px; 
+}
+
+#presentation p {
+    margin-top: 10px; 
+    margin-left: 50px;
+}
+
+#presentation{
+
+    background-color: lightgrey;
+    padding: 5px;
+    height: fit-content;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 15px;
+    display: flex;           
+    flex-direction: row;     
+    gap: 10px; 
+    font-size: 20px;
+    margin-bottom: 10px;
+    
+}
+
+#zoneInterraction{
+
+    text-align: end;
+}
+
+#like {
+
+    width: 15px; 
+    height: 15px; 
+
+}
+
+#commentaire {
+
+    width: 15px; 
+    height: 15px; 
+
+}
+
+#share {
+
+    width: 15px; 
+    height: 15px; 
+
+}
+
+#zonePosts {
+
+    border: 2px solid rgb(0, 0, 0);
+    width: 1590px;
+    height: 10000px;
+    padding: 15px;
+    padding-top: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap:15px;
+
+
+}
+
+#entete {
+
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    flex: row;
+    padding-left: 15px;
+}
+
+#titlePolyte {
+
+    color:rgb(231, 131, 211);
+ 
+}
+
+#titleX {
+
+    color:rgb(61, 205, 245);
+
+}
