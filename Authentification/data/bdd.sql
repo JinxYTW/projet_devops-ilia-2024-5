@@ -1,12 +1,12 @@
 USE polytex;
 
 CREATE TABLE utilisateur (
-    Nom VARCHAR(50) NOT NULL,
-    Prenom VARCHAR(50) NOT NULL,
-    Email VARCHAR(100) NOT NULL,
-    Mot_de_passe VARCHAR(255) NOT NULL,
-    Nom_utilisateur VARCHAR(50) NOT NULL PRIMARY KEY,
-    Pseudo VARCHAR(50) NOT NULL
+    nom_utilisateur VARCHAR(50) NOT NULL PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    pseudo VARCHAR(50) NOT NULL
 );
 
 INSERT INTO utilisateur (Nom, Prenom, Email, Mot_de_passe, Nom_utilisateur, Pseudo)
