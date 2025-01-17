@@ -1,5 +1,5 @@
 import { screen, fireEvent, render } from '@testing-library/dom';
-import { toggleLike, toggleComment, toggleShare, addPost } from '../src/profile.js';
+import { toggleLike, toggleComment, toggleShare, addPost,subscribe,goToProfile } from '../src/profile.js';
 
 beforeEach(() => {
   document.body.innerHTML = `
@@ -20,6 +20,7 @@ beforeEach(() => {
             <h2> Michel Michel</h2>
             <h4> @MichelMichel</h4>
             <h4> Il/Elle/Iel</h4>
+            <button id="suscribeButton"> <img id="suscribe" src="../data/plus.png"></button>
         </div>
         <p> Ceci est une description descriptive de ce que fait MichelMichel notre personne X dans sa vie</p>
     </div>
@@ -72,3 +73,33 @@ test('ajout d\'un nouveau post dans la zone de posts', () => {
   expect(screen.getByText('commentaire')).toBeInTheDocument();
   expect(screen.getByText('partage')).toBeInTheDocument();
 }); 
+
+test('abonnement à un profil', () => {
+  const suscribeButton = screen.getByRole('button', { name: /suscribe/i });
+
+
+  expect(suscribeButton).not.toHaveClass('suscribed');
+
+  fireEvent.click(suscribeButton);
+
+  expect(suscribeButton).toHaveClass('suscribed');
+});
+
+
+//Généré par ChatGPT, je sais pas si celà fonctionnera comme je le pense.
+// C'est censé détecter une redirection simulée.
+//Si le test ne passe pas, il faudra créer la page profil utilisateur puis faire une redirection propre
+test('retour à son profil', () => {
+  const monProfil = screen.getByText('Huguette231');
+
+  // Simule une fonction de redirection
+  const mockNavigation = jest.fn();
+  monProfil.addEventListener('click', mockNavigation);
+
+  fireEvent.click(monProfil);
+
+  // Vérifie que la fonction de redirection a été appelée
+  expect(mockNavigation).toHaveBeenCalled();
+});
+
+
