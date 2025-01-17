@@ -83,7 +83,7 @@ paths:
       responses:
         '200':
           description: OK L'utilisateur à été crée
-        '500':
+        '401':
           description: Mauvais identifiants fournis
   
   /users/{userName}:
