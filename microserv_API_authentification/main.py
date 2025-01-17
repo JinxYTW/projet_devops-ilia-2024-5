@@ -48,12 +48,6 @@ class User(db.Model):
             "pseudo": self.pseudo
         }
 
-    def basic_info(self):
-        return {
-            "username": self.username,
-            "pseudo": self.pseudo
-        }
-
 
 # Endpoint pour l'incription
 @app.route("/auth/sign_in", methods=["POST"])
@@ -79,8 +73,7 @@ def sign_in():
     db.session.add(new_user)
     db.session.commit()
 
-    access_token = create_access_token(identity=username)
-    return jsonify({"token": access_token}), 200
+    return jsonify({"message": "Utilisateur créé avec succès"}), 200
 
 
 # Endpoint pour la connexion
@@ -101,17 +94,9 @@ def login():
     return jsonify({"message": "Nom d'utilisateur ou mot de passe incorrect"}), 401
 
 
-# Endpoint pour récupérer tous les informations d'un utilisateur
+# Endpoint pour récupérer les informations d'un utilisateur
 @app.route("/users/<username>", methods=["GET"])
-def get_user(username):
-    user = User.query.filter(User.username == username).first()
-    if not user:
-        return jsonify({"message": "Utilisateur non trouvé"}), 404
-    return jsonify(user.to_dict()), 200
-
-
-# Endpoint pour récupérer le nom et le pseudo d'un utilisateur
-@app.route("/users/<username>", methods=["GET"])
+@jwt_required()
 def get_user(username):
     user = User.query.filter_by(username=username).first()
     if not user:
@@ -121,88 +106,52 @@ def get_user(username):
 
 
 # Endpoint pour supprimer un utilisateur
-@app.route("/users/<username>", methods=["Delete"])
-def delete_user(username):
-    user = User.query.filter(User.username == username).first()
-    if not user:
-        return jsonify({"message": "Utilisateur non trouvé"}), 404
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"message": "Utilisateur supprimé"}), 200
-
-
-# Endpoint pour mettre à jour les informations de l'utilisateur
-@app.route("/users/<username>", methods=["PUT"])
-def update_user(username):
-    user = User.query.filter(User.username == username).first()
-    if not user:
-        return jsonify({"message": "Utilisateur non trouvé"}), 404
-    data = request.get_json()
-    user.nom = data.get("nom", user.nom)
-    user.prenom = data.get("prenom", user.prenom)
-    user.email = data.get("email", user.email)
-    user.password = data.get("password", user.password)
-    user.username = data.get("username", user.username)
-    user.pseudo = data.get("pseudo", user.pseudo)
-    db.session.commit()
-    return jsonify(user.to_dict()), 200
-
-
-# Endpoint pour récupérer
-@app.route("/users/information/<username>", methods=["GET"])
-@jwt_required()
-def get_user_info(username):
-    current_user = get_jwt_identity()
-    if current_user != username:
-        return jsonify({"message": "Accès non autorisé"}), 403
-
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        return jsonify({"message": "Utilisateur non trouvé"}), 404
-
-    return jsonify(user.to_dict()), 200
-
-
-# Endpoint pour supprimer un utilisateur
 @app.route("/users/<username>", methods=["DELETE"])
 @jwt_required()
 def delete_user(username):
-    current_user = get_jwt_identity()
-    if current_user != username:
-        return jsonify({"message": "Accès non autorisé"}), 403
+    try:
+        current_user = get_jwt_identity()
+        if current_user != username:
+            return jsonify({"message": "Accès non autorisé"}), 403
 
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        return jsonify({"message": "Utilisateur non trouvé"}), 404
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return jsonify({"message": "Utilisateur non trouvé"}), 404
 
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"message": "Utilisateur supprimé"}), 200
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "Utilisateur supprimé"}), 200
+    except Exception as e:
+        return jsonify({"message": "Erreur interne du serveur", "error": str(e)}), 500
 
 
 # Endpoint pour mettre à jour les informations de l'utilisateur
 @app.route("/users/<username>", methods=["PUT"])
 @jwt_required()
 def update_user(username):
-    current_user = get_jwt_identity()
-    if current_user != username:
-        return jsonify({"message": "Accès non autorisé"}), 403
+    try:
+        current_user = get_jwt_identity()
+        if current_user != username:
+            return jsonify({"message": "Accès non autorisé"}), 403
 
-    data = request.get_json()
+        data = request.get_json()
 
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        return jsonify({"message": "Utilisateur non trouvé"}), 404
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return jsonify({"message": "Utilisateur non trouvé"}), 404
 
-    # Mise à jour des informations de l'utilisateur
-    user.nom = data.get("nom", user.nom)
-    user.prenom = data.get("prenom", user.prenom)
-    user.email = data.get("email", user.email)
-    user.password = data.get("password", user.password)
-    user.pseudo = data.get("pseudo", user.pseudo)
+        # Mise à jour des informations de l'utilisateur
+        user.nom = data.get("nom", user.nom)
+        user.prenom = data.get("prenom", user.prenom)
+        user.email = data.get("email", user.email)
+        user.password = data.get("password", user.password)
+        user.pseudo = data.get("pseudo", user.pseudo)
 
-    db.session.commit()
-    return jsonify(user.to_dict()), 200
+        db.session.commit()
+        return jsonify(user.to_dict()), 200
+
+    except Exception as e:
+        return jsonify({"message": "Erreur interne du serveur", "error": str(e)}), 500
 
 
 if __name__ == "__main__":
