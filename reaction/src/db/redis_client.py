@@ -1,4 +1,9 @@
 import redis
+import os
+
+
 
 def get_redis_client():
-    return redis.Redis(host='localhost', port=6379, db=0)
+    redis_host = os.getenv('REDIS_HOST','redis')
+    redis_port = int(os.getenv('REDIS_PORT',6379))
+    return redis.Redis(host=redis_host, port=redis_port, db=0)
