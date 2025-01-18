@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-from Authentification.src import app
+from config import app
 
 load_dotenv()
 

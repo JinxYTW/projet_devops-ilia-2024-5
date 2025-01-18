@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from Authentification.src import app, db
-from Authentification.src.models.example_model import User
+from config import app, db
+from models.example_model import User
 
 
 @jwt_required()

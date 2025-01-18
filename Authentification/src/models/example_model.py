@@ -1,4 +1,4 @@
-from ..routes import db
+from ..config import db
 
 
 class User(db.Model):

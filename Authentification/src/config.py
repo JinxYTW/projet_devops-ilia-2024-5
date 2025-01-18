@@ -2,7 +2,14 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 
-from Authentification.src import app
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
+
+app = Flask(__name__)
+
+db = SQLAlchemy(app)
+jwt = JWTManager(app)
 
 load_dotenv()
 
