@@ -13,6 +13,9 @@ RUN pip install --no-cache-dir --default-timeout=100 -r requirements.txt
 
 # Copier tout le contenu de l'application dans le conteneur
 COPY app.py .
+COPY routes/ ./routes
+COPY services/ ./services
+COPY db/ ./db
 
 # Exposer le port que Flask utilise (par défaut 5000)
 EXPOSE 5000
