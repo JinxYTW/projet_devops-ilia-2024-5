@@ -327,3 +327,151 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 
 
 
+
+
+# Guide de Contribution au Développement de l'API Web de Réaction à un Tweet
+
+Ce guide détaille les processus à suivre pour contribuer efficacement au développement de notre API, incluant l'intégration de Redis pour la gestion du db. Il couvre la gestion des tâches via les issues, la création de branches, le développement basé sur le Test-Driven Development (TDD), et la soumission de Pull Requests (PR).
+
+## 1. Gestion des Tâches avec des Issues
+
+### Création d’une Issue
+1. **Définir la tâche** : Pour chaque nouvelle fonctionnalité ou correction de bug, créez une issue dans GitHub.
+2. **Nom de l’issue** : Utilisez un titre clair et descriptif, tel que "Ajouter une route pour récupérer les utilisateurs".
+3. **Description** : Incluez les spécifications détaillées, y compris les endpoints, les méthodes HTTP, et la logique métier attendue.
+4. **Assignation** : Assignez l'issue à vous-même.
+
+## 2. Création d'une Branche Associée
+
+### Création de la Branche
+1. **Utilisation du bouton GitHub** : Une fois l'issue créée, utilisez le bouton proposé par GitHub pour créer une branche associée.
+2. **Convention de Nom des Branches** : Suivez le format `issue-[numéro]-[description]`, par exemple `issue-12-get-users-route`.
+
+## 3. Développement Basé sur le TDD
+
+### Écriture des Tests Avant Développement
+1. **Fichier de Test** : Écrivez d'abord les tests pour chaque fonctionnalité dans le répertoire `tests/`.
+   - Exemple : `tests/test_user_routes.py` pour les routes des utilisateurs.
+2. **Structure des Tests** : Utilisez `pytest`. Chaque fichier de test doit couvrir les cas de test pour la fonctionnalité correspondante.
+
+#### Exemple de Test (`tests/test_user_routes.py`)
+```python
+import pytest
+from app import create_app
+
+@pytest.fixture
+def client():
+    app = create_app()
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_get_users(client):
+    response = client.get('/users')
+    assert response.status_code == 200
+    assert isinstance(response.json, list)
+```
+
+### Exécution des Tests
+1. **Lancer les Tests** : Assurez-vous que les tests échouent initialement, puis développez la fonctionnalité pour qu'ils passent.
+   ```bash
+   pytest tests/
+   ```
+
+## 4. Codage
+
+### Structure des Fichiers
+1. **Routes** : Chaque fichier de route se trouve dans `routes/` et contient les Blueprints et définitions des routes.
+   - Exemple : `routes/user_routes.py` pour les routes utilisateurs.
+2. **Services** : Placez la logique métier dans `services/`.
+   - Exemple : `services/user_service.py` pour les services liés aux utilisateurs.
+
+### Intégration de Redis
+1. **Configuration de Redis** : Assurez-vous que Redis est installé et en cours d'exécution. Configurez l'application pour utiliser Redis comme base de données.
+2. **Exemple de Connexion à Redis** :
+   - Créez un fichier `db/redis_client.py` :
+     ```python
+     import redis
+
+     def get_redis_client():
+         return redis.Redis(host='localhost', port=6379, db=0)
+     ```
+3. **Utilisation de Redis dans un Service** :
+   - Exemple dans `services/user_service.py` :
+     ```python
+     from db.redis_client import get_redis_client
+
+     def get_all_users():
+         client = get_redis_client()
+         users = client.get('users')
+         if users is None:
+             # Simuler une récupération de la base de données
+             users = []
+         else:
+             users = eval(users)
+         return users
+     ```
+
+### Exemple de Code
+
+#### Routes (`routes/user_routes.py`)
+```python
+from flask import Blueprint, jsonify
+from app.services.user_service import get_all_users
+
+user_bp = Blueprint('user', __name__)
+
+@user_bp.route('/users', methods=['GET'])
+def get_users():
+    users = get_all_users()
+    return jsonify(users), 200
+```
+
+#### Services (`services/user_service.py`)
+```python
+from db.redis_client import get_redis_client
+
+def get_all_users():
+    client = get_redis_client()
+    users = client.get('users')
+    if users is None:
+        # Exemple de données statiques (à remplacer par une requête à la base de données)
+        users = []
+    else:
+        users = eval(users)
+    return users
+```
+
+### Règles de Codage
+1. **Séparation des Responsabilités** : 
+   - Les **routes** gèrent les requêtes et réponses.
+   - Les **services** contiennent la logique métier.
+2. **Tests** : Testez localement votre code avant de soumettre une PR.
+
+## 5. Pull Request (PR)
+
+### Création d'une PR
+1. **Push de la Branche** :
+   ```bash
+   git push origin issue-12-get-users-route
+   ```
+2. **Ouvrir une PR** : 
+   - Créez une PR sur GitHub depuis votre branche vers la branche principale.
+   - **Titre** : Utilisez le format `[Issue #12] Ajout de la route GET /users`.
+   - **Description** : Décrivez les modifications apportées et incluez les détails pertinents.
+
+### Revue et Fusion
+1. **Revue de Code** : Une autre personne doit approuver la PR.
+2. **Tests** : Vérifiez que tous les tests passent avant de fusionner.
+3. **Fusion** : Fusionnez la PR une fois approuvée.
+
+## 6. Bonnes Pratiques
+- **Messages de Commit** : Soyez précis et utilisez un format cohérent.
+  - Exemple : `feat: Ajout de la route GET /users`
+- **Mise à Jour des Branches** : Maintenez votre branche à jour avec la branche principale.
+   ```bash
+   git pull origin main
+   ```
+
+En suivant ce guide, l'équipe peut collaborer efficacement tout en garantissant la qualité et la cohérence du code.
+```
