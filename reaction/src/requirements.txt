@@ -1,0 +1,2 @@
+Flask
+redis          # Client Redis pour Python.
