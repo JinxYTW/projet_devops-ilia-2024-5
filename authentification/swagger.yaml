@@ -8,7 +8,7 @@ paths:
   /auth/login:
     post:
       tags:
-        - Authentification
+        - authentification
       summary: Permet de connecter l'utilisateur
       description: Permet de connecter l'utilisateur et de récupérer le token de connexion
       parameters:
@@ -41,7 +41,7 @@ paths:
   /auth/sign_in:
     post:
       tags:
-        - Authentification
+        - authentification
       summary: Permet de créer un utilisateur
       description: Permet de créer un utilisateur et de récupérer l'utilisateur
       parameters:
