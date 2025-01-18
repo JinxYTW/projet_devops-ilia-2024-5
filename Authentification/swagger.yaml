@@ -1,0 +1,224 @@
+openapi: '3.0.3'
+info:
+  title: API d'authentification
+  version: '1.0'
+servers:
+  - url: https://authentification.polytex.com/
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentification
+      summary: Permet de connecter l'utilisateur
+      description: Permet de connecter l'utilisateur et de récupérer le token de connexion
+      parameters:
+        - name: userName
+          in: query
+          description: Le nom d'utilisateur qui veut se connecter
+          required: true
+          schema:
+            type: string
+
+        - name: password
+          in: query
+          description: Le mot de passe lié au compte
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "t0k3n"
+        '401':
+          description: Mauvais identifiants fournis
+  /auth/sign_in:
+    post:
+      tags:
+        - Authentification
+      summary: Permet de créer un utilisateur
+      description: Permet de créer un utilisateur et de récupérer l'utilisateur
+      parameters:
+        - name: lastName
+          in: query
+          description: Le nom de famille du nouveau utilisateur
+          required: true
+          schema:
+            type: string
+
+        - name: firstName
+          in: query
+          description: Le prénom du nouveau utilisateur
+          required: true
+          schema:
+            type: string
+
+        - name: email
+          in: query
+          description: L'adresse mail du nouveau utilisateur
+          required: true
+          schema:
+            type: string
+
+        - name: userName
+          in: query
+          description: Le nom d'utilisateur du nouveau utilisateur
+          required: true
+          schema:
+            type: string
+
+        - name: password
+          in: query
+          description: Le mot de passe du nouveau utilisateur
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: OK L'utilisateur à été crée
+        '401':
+          description: Mauvais identifiants fournis
+  
+  /users/{userName}:
+    get:
+      tags:
+      -  Gestion des utilisateurs
+      summary: Permet de récupérer les informations d'un utilisateur
+      description: Permet de récupérer les informations d'un utilisateur à partir de son nom d'utilisateur
+      parameters:
+        - name: userName
+          in: path
+          description: Le nom d'utilisateur de l'utilisateur dont on veut
+          required: true
+          schema:
+            type: string  
+  
+      responses:
+        '200':
+          description: OK L'utilisateur est crée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userName:
+                    type: string
+                    example: "us3r"
+                  lastName:
+                    type: string
+                    example: "Dupont"
+                  firstName:
+                    type: string
+                    example: "Patrice"
+                  email:
+                    type: string
+                    example: "email@example.com"
+                  pseudo:
+                    type: string
+                    example: "us3rl3thug"
+        '401':
+          description: Token non valide
+        '404':
+          description: L'utilisateur n'existe pas
+
+
+
+    delete:
+      tags:
+        -  Gestion des utilisateurs
+      summary: Permet de supprimer un utilisateur
+      description: Permet de supprimer un utilisateur à partir de son nom d'utilisateur
+      parameters:
+        - name: userName
+          in: path
+          description: Le nom d'utilisateur de l'utilisateur dont on veut
+          required: true
+          schema:
+            type: string  
+
+        - name: token
+          in: query
+          description: Le token lié à cet utilisateur
+          required: true
+          schema:
+            type: string  
+
+      responses:
+        '200': 
+          description: OK L'utilisateur est supprimé
+        '401':
+          description: Token non valide
+        '404':
+          description: L'utilisateur n'existe pas
+        '500':
+          description: Erreur interne au serveur
+
+    put:
+
+      tags:
+      -  Gestion des utilisateurs
+      summary: Permet de modifier les informations d'un utilisateur
+      description: Permet de modifier les informations d'un utilisateur à partir de son nom d'utilisateur
+      parameters:
+        - name: userName
+          in: path
+          description: Le nom d'utilisateur de l'utilisateur dont on veut
+          required: true
+          schema:
+            type: string 
+
+        - name: lastName
+          in: query
+          description: Le nom de famille du nouveau utilisateur
+          schema:
+            type: string 
+
+        - name: firstName
+          in: query
+          description: Le prénom du nouveau utilisateur
+          schema:
+            type: string
+
+        - name: email
+          in: query
+          description: L'adresse mail du nouveau utilisateur
+          schema:
+            type: string
+
+        - name: userName
+          in: query
+          description: Le nom d'utilisateur du nouveau utilisateur
+          schema:
+            type: string
+
+        - name: password
+          in: query
+          description: Le mot de passe du nouveau utilisateur
+          schema:
+            type: string
+        
+        - name: token
+          in: query
+          description: Le token d'authentification
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200': 
+          description: OK L'utilisateur est supprimé
+        '401':
+          description: Token non valide
+        '404':
+          description: L'utilisateur n'existe pas
+        '500':
+          description: Erreur interne au serveur
+
+    

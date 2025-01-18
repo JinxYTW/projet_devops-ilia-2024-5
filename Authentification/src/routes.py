@@ -10,9 +10,9 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///app.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "JWT_SECRET_KEY")
+app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret")
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=1)
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
@@ -27,26 +27,6 @@ def refresh_token_if_needed():
     current_user = get_jwt_identity()
     new_token = create_access_token(identity=current_user)
     return jsonify({"new_token": new_token}), 200
-
-
-class User(db.Model):
-    __tablename__ = 'users'
-
-    nom = db.Column(db.String(50), nullable=False)
-    prenom = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    pseudo = db.Column(db.String(50), nullable=False)
-
-    def to_dict(self):
-        return {
-            "nom": self.nom,
-            "prenom": self.prenom,
-            "email": self.email,
-            "username": self.username,
-            "pseudo": self.pseudo
-        }
 
 
 # Endpoint pour l'incription
@@ -155,4 +135,5 @@ def update_user(username):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug_mode)
