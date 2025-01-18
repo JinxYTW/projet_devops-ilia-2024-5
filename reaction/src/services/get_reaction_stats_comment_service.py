@@ -16,13 +16,3 @@ def get_reaction_stats(comment_id):
     return reaction_stats
 
 
-def has_user_reacted(tweet_id, user_id):
-    client = get_redis_client()
-    user_reaction_key = f"tweet:{tweet_id}:user:{user_id}:reaction"
-    
-    reaction = client.get(user_reaction_key)  # Vérifie la réaction de cet utilisateur
-    
-    if reaction is None:
-        return {"hasReacted": False, "reaction": None}
-    
-    return {"hasReacted": True, "reaction": reaction.decode()}
