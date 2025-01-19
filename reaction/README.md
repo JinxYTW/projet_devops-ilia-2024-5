@@ -67,7 +67,7 @@ Assurez-vous d'être dans le dossier reaction :
 cd reaction/
 ```
 
-Pour démarrer l'application, exécutez la commande suivante :
+Pour démarrer l'application, assurez-vous que vous n'avez un service en cours qui utilise les ports 5000 (pour notre api), 6379 (pour notre db redis) et 80 (pour notre doc swagger) et ensuite exécutez la commande suivante :
 
 ```bash
 docker-compose up --build
