@@ -1,0 +1,362 @@
+openapi: 3.0.0
+info:
+  title: API pour la gestion des Commentaires et Réactions
+  description: Cette API permet de gérer les commentaires et les réactions (likes) sur des tweets.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Serveur local
+    
+paths:
+  /tweets/{tweet_id}/comments:
+    post:
+      summary: Créer un commentaire sur un tweet
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: "12345"
+                content:
+                  type: string
+                  example: "Ceci est un commentaire."
+      responses:
+        '201':
+          description: Commentaire créé avec succès
+
+    get:
+      summary: Récupérer les commentaires d’un tweet
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des commentaires
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    comment_id:
+                      type: string
+                    user_id:
+                      type: string
+                    content:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                      example: "2023-01-10T12:34:56Z"
+
+  /comments/{comment_id}:
+    put:
+      summary: Modifier un commentaire
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: "Ceci est un commentaire modifié."
+      responses:
+        '200':
+          description: Commentaire modifié avec succès
+
+    delete:
+      summary: Supprimer un commentaire
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Commentaire supprimé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Commentaire supprimé avec succès."
+
+  /tweets/{tweet_id}/reactions:
+    get:
+      summary: Récupérer les réactions d’un tweet
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des réactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reaction_id:
+                      type: string
+                    user_id:
+                      type: string
+                    reaction:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                      example: "2023-01-10T12:45:00Z"
+    post:
+      summary: Ajouter une réaction à un tweet
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: "12345"
+                reaction:
+                  type: string
+                  enum:
+                    - like
+                    - love
+                    - haha
+                    - sad
+                    - angry
+                  example: "like"
+      responses:
+        '201':
+          description: Réaction ajoutée avec succès
+
+  /comments/{comment_id}/reactions:
+    get:
+      summary: Récupérer les réactions d’un commentaire
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des réactions d’un commentaire
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reaction_id:
+                      type: string
+                    user_id:
+                      type: string
+                    reaction:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                      example: "2023-01-10T12:50:00Z"
+    post:
+      summary: Ajouter une réaction à un commentaire
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: "12345"
+                reaction:
+                  type: string
+                  enum:
+                    - like
+                    - love
+                    - haha
+                    - sad
+                    - angry
+                  example: "love"
+      responses:
+        '201':
+          description: Réaction ajoutée avec succès
+
+  /tweets/{tweet_id}/reactions/{reaction_id}:
+    delete:
+      summary: Supprimer une réaction sur un tweet
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: reaction_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Réaction supprimée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Réaction supprimée avec succès."
+
+  /comments/{comment_id}/reactions/{reaction_id}:
+    delete:
+      summary: Supprimer une réaction sur un commentaire
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: reaction_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Réaction supprimée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Réaction supprimée avec succès."
+
+  /tweets/{tweet_id}/reactions/stats:
+    get:
+      summary: Récupérer les statistiques de réactions sur un tweet
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistiques des réactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like:
+                    type: integer
+                    example: 3
+                  love:
+                    type: integer
+                    example: 1
+
+  /comments/{comment_id}/reactions/stats:
+    get:
+      summary: Récupérer les statistiques de réactions sur un commentaire
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistiques des réactions d’un commentaire
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like:
+                    type: integer
+                    example: 3
+                  love:
+                    type: integer
+                    example: 1
+
+  /tweets/{tweet_id}/reactions/{user_id}:
+    get:
+      summary: Vérifier si un utilisateur a réagi avec une réaction spécifique
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Réponse sur la réaction de l'utilisateur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_reacted:
+                    type: boolean
+                    example: true
+                  reaction:
+                    type: string
+                    enum:
+                      - like
+                      - love
+                      - haha
+                      - sad
+                      - angry
+                    example: "like"
