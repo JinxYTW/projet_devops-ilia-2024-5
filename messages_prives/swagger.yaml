@@ -66,12 +66,6 @@ paths:
           schema:
             type: string
           description: ID du second utilisateur
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-          description: Numéro de la page des messages
       responses:
         '200':
           description: Liste des messages entre deux utilisateurs
@@ -90,11 +84,6 @@ paths:
                       type: string
                     content:
                       type: string
-                    timestamp:
-                      type: string
-                      format: date-time
-                    isRead:
-                      type: boolean
         '400':
           description: Requête invalide
         '404':
