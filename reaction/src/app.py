@@ -1,8 +1,9 @@
 from flask import Flask
 from routes import blueprints
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Fonction pour charger dynamiquement les routes depuis le dossier `routes`
 def load_routes():
