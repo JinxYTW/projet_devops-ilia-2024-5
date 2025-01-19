@@ -11,9 +11,9 @@ COPY tests/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --default-timeout=100 -r requirements.txt
 
-# Copier tout le contenu de l'application dans le conteneur
+# Copier les répertoires nécessaires dans le conteneur
 COPY src/ ./src
 COPY tests/ ./tests
 
-# Définir la commande par défaut pour exécuter l'application
+# Définir la commande par défaut pour exécuter les tests
 CMD ["pytest", "tests/"]

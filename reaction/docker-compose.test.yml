@@ -1,0 +1,17 @@
+version: '3.8'
+
+
+services:
+  tests:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile 
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+  
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379" # Expose le port 6379 du conteneur sur le port 6379 de l'hôte
