@@ -1,21 +1,18 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: Swagger MP
-  description: |-
-    This microservice is responsible for managing private messages.
-    It allows you to write messages to another user privately.
+  title: Swagger API Messages Privés Polytex
   version: 0.0.1
+  description: API pour la gestion des messages privés dans Polytex.
 tags:
-  - name: messages_prives
-    description: Everything about the private messages
+  - name: private_message
+    description: Toutes les routes pour les messages privés
 paths:
-  /MP/send/{username}:
+  /messages:
     post:
       tags:
-        - messages_prives
-      summary: Send a private message
-      description: Send a private message to another user
-      operationId: sendPrivateMessage
+        - private_message
+      summary: Envoyer un message privé
+      operationId: sendMessage
       requestBody:
         required: true
         content:
@@ -23,41 +20,103 @@ paths:
             schema:
               type: object
               properties:
-                message:
+                sender:
                   type: string
-                  description: The message to send
-      parameters:
-        - name: username
-          in: path
-          description: The user who receives the messages
-          required: true
-          schema:
-            type: string
+                  description: ID de l'expéditeur
+                receiver:
+                  type: string
+                  description: ID du destinataire
+                content:
+                  type: string
+                  description: Contenu du message
+              required:
+                - sender
+                - receiver
+                - content
       responses:
         '200':
-          description: Message sent
+          description: Message envoyé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messageId:
+                    type: string
+                    description: ID unique du message
         '400':
-          description: Invalid input
-        '500':
-          description: Internal server error
-  /MP/receive/{username}:
+          description: Requête invalide (paramètres manquants ou incorrects)
+          
+  /messages/{user1}/{user2}:
     get:
       tags:
-        - messages_prives
-      summary: Receive private messages
-      description: Receive private messages from another user
-      operationId: receivePrivateMessages
+        - private_message
+      summary: Récupérer les messages entre deux utilisateurs
+      operationId: getMessages
       parameters:
-        - name: username
+        - name: user1
           in: path
-          description: The user who receives the messages
           required: true
           schema:
             type: string
+          description: ID du premier utilisateur
+        - name: user2
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID du second utilisateur
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Numéro de la page des messages
       responses:
         '200':
-          description: Messages received
+          description: Liste des messages entre deux utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    messageId:
+                      type: string
+                    sender:
+                      type: string
+                    receiver:
+                      type: string
+                    content:
+                      type: string
+                    timestamp:
+                      type: string
+                      format: date-time
+                    isRead:
+                      type: boolean
         '400':
-          description: Invalid input
-        '500':
-          description: Internal server error
+          description: Requête invalide
+        '404':
+          description: Aucun message trouvé
+
+  /messages/{message_id}:
+    put:
+      tags:
+        - private_message
+      summary: Marquer un message comme lu
+      operationId: markMessageAsRead
+      parameters:
+        - name: message_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID du message à marquer comme lu
+      responses:
+        '200':
+          description: Message marqué comme lu avec succès
+        '404':
+          description: Message introuvable
+        '400':
+          description: Requête invalide
