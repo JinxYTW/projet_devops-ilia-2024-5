@@ -1,6 +1,11 @@
 import pytest
-from app import create_app
 from unittest.mock import patch
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/')))
+
+from app import create_app
 
 @pytest.fixture
 def client():

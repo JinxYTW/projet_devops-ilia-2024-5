@@ -1,16 +1,16 @@
 import pytest
 import sys
 import os
-import redis
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/')))
 
 from app import create_app
+from db.redis_client import get_redis_client
 
 # Redis mock setup
 @pytest.fixture
 def redis_client():
-    client = redis.Redis(host='localhost', port=6379, db=0)
+    client = get_redis_client()
     client.flushdb()  # Nettoyer la base Redis avant chaque test
     return client
 
