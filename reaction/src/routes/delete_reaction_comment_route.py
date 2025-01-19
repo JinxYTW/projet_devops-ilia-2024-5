@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from reaction.src.services.delete_reaction_comment_service import delete_reaction_comment
+from services.delete_reaction_comment_service import delete_reaction_comment
 
 reactions_bp = Blueprint('reactions', __name__)
 
