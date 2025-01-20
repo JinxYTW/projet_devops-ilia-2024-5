@@ -28,7 +28,7 @@ def test_delete_comment(client, redis_client):
     data = {
         "id": comment_id,
         "content": "This is a test comment",
-        "userId": "user123"
+        "user_id": "user123"
     }
 
     # Ajouter un commentaire dans Redis

@@ -28,11 +28,11 @@ def test_get_comments(client, redis_client):
     
     # Ajouter un commentaire à Redis pour ce tweet
     comment_data = {
-        "userId": "user1",
+        "user_id": "user1",
         "content": "This is a test comment"
     }
     comment_data2 = {
-        "userId": "user1",
+        "user_id": "user1",
         "content": "This is a test comment"
     }
 
@@ -49,7 +49,7 @@ def test_get_comments(client, redis_client):
     # Vérifier la structure de la réponse
     assert isinstance(response_data, list)  # La réponse doit être une liste
     assert len(response_data) == 2  # Un seul commentaire doit être présent
-    assert "commentId" in response_data[0]
-    assert "userId" in response_data[0]
+    assert "comment_id" in response_data[0]
+    assert "user_id" in response_data[0]
     assert "content" in response_data[0]
     assert "created_at" in response_data[0]

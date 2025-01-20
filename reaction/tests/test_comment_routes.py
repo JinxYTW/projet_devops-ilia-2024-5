@@ -27,7 +27,7 @@ def client():
 def test_create_comment(client, redis_client):
     tweet_id = "12345"
     data = {
-        "userId": "user1",
+        "user_id": "user1",
         "content": "This is a test comment"
     }
 
@@ -38,10 +38,10 @@ def test_create_comment(client, redis_client):
     assert response.status_code == 201
     response_data = response.get_json()
 
-    # Vérifier que la réponse contient le message et le commentId
+    # Vérifier que la réponse contient le message et le comment_id
     assert "message" in response_data
     assert response_data["message"] == "Comment added successfully"
-    assert "commentId" in response_data
+    assert "comment_id" in response_data
 
     # Vérifier que le commentaire est stocké dans Redis
     comments = redis_client.lrange(f"comments:{tweet_id}", 0, -1)
@@ -51,5 +51,5 @@ def test_create_comment(client, redis_client):
     stored_comment = eval(comments[0].decode())
 
     # Vérifier que les données stockées correspondent à celles envoyées
-    assert stored_comment["userId"] == data["userId"]
+    assert stored_comment["user_id"] == data["user_id"]
     assert stored_comment["content"] == data["content"]

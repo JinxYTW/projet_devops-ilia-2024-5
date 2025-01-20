@@ -12,7 +12,7 @@ def add_reaction(tweet_id):
         reaction = data.get('reaction')
 
         if not user_id or not reaction:
-            return jsonify({"error": "Les champs 'userId' et 'reaction' sont obligatoires."}), 400
+            return jsonify({"error": "Les champs 'user_id' et 'reaction' sont obligatoires."}), 400
 
         # Ajouter la réaction via le service
         success = add_tweet_reaction(tweet_id, user_id, reaction)

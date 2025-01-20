@@ -28,11 +28,11 @@ def test_update_comment(client, redis_client):
     
     # Ajouter un commentaire à Redis pour ce tweet
     comment_data = {
-        "userId": "user1",
+        "user_id": "user1",
         "content": "This is a test comment"
     }
     response = client.post(f'/tweets/{tweet_id}/comments', json=comment_data)
-    comment_id = response.get_json()['commentId']  # Récupérer l'ID du commentaire ajouté
+    comment_id = response.get_json()['comment_id']  # Récupérer l'ID du commentaire ajouté
     
     # Modifier le commentaire
     updated_data = {
@@ -42,7 +42,7 @@ def test_update_comment(client, redis_client):
 
     # Vérifier la réponse
     assert response.status_code == 200
-    assert response.get_json() == {"message": "Comment updated successfully", "commentId": comment_id}
+    assert response.get_json() == {"message": "Comment updated successfully", "comment_id": comment_id}
 
     # Vérifier que le commentaire a bien été mis à jour dans Redis
     comments = redis_client.lrange(f"comments:{tweet_id}", 0, -1)
