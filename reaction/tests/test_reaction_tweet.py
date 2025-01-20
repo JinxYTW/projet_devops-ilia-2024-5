@@ -22,7 +22,7 @@ def test_add_reaction(client):
 
     # Corps de la requête
     reaction_data = {
-        "userId": "12345",
+        "user_id": "12345",
         "reaction": "like"
     }
 

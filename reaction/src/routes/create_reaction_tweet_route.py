@@ -8,7 +8,7 @@ def add_reaction(tweet_id):
     try:
         # Récupérer les données de la requête
         data = request.get_json()
-        user_id = data.get('userId')
+        user_id = data.get('user_id')
         reaction = data.get('reaction')
 
         if not user_id or not reaction:
