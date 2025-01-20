@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from services.reaction_comment_service import add_reaction_to_comment
 
-comment_reaction_bp = Blueprint('reactions', __name__)
+comment_reaction_bp = Blueprint('comment_reaction_bp', __name__)
 
 @comment_reaction_bp.route('/comments/<int:comment_id>/reactions', methods=['POST'])
 def add_reaction(comment_id):

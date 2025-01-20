@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from services.delete_reaction_comment_service import delete_reaction_comment
 
-reactions_bp = Blueprint('reactions', __name__)
+reactions_bp = Blueprint('reactions_bp', __name__)
 
 @reactions_bp.route('/comments/<comment_id>/reactions/<reaction_id>', methods=['DELETE'])
 def handle_delete_reaction(comment_id, reaction_id):

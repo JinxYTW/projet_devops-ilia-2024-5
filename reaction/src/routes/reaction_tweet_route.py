@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from services.reaction_tweet_service import add_tweet_reaction
 
-reaction_bp = Blueprint('reactions', __name__)
+reaction_bp = Blueprint('reaction_bp', __name__)
 
 @reaction_bp.route('/tweets/<int:tweet_id>/reactions', methods=['POST'])
 def add_reaction(tweet_id):

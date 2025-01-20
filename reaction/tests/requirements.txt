@@ -1,3 +1,4 @@
 Flask
 redis
 pytest
+flask_Cors
