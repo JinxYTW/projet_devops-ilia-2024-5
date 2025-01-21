@@ -7,14 +7,15 @@ def delete_comment_by_id(comment_id):
     client = get_redis_client()
 
     # Récupérer tous les commentaires
-    comments = client.lrange("comments", 0, -1)
-
-    if comments:
-        for comment in comments:
-            comment_data = eval(comment.decode())  # Convertir le commentaire en dict
-            if comment_data["id"] == comment_id:
-                # Supprimer le commentaire correspondant
-                client.lrem("comments", 0, comment)
+    all_comment_keys = client.keys("comments:*")
+    
+    for key in all_comment_keys:
+        comments = client.lrange(key, 0, -1)
+        for idx, comment in enumerate(comments):
+            comment_dict = eval(comment.decode())  # Convertir la chaîne en dictionnaire
+            if comment_dict["comment_id"] == comment_id:
+                # Mettre à jour le contenu du commentaire
+                client.lrem(key, 0, comment)
                 return True
 
     # Si le commentaire n'est pas trouvé
