@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from services.reaction_service import get_comment_reaction_stats
+from services.get_comment_reaction_stats import get_comment_reaction_stats
 
 comment_reaction_stats_bp = Blueprint('comment_reaction_stats', __name__)
 
