@@ -1,5 +1,5 @@
 body {
-    background-image: url('../data/fontpotentiel.jpg');
+    background-image: url('../../data/fontpotentiel.jpg');
     background-attachment: fixed; 
     background-size: cover; 
     background-position: bottom center; 
@@ -81,6 +81,31 @@ body {
     right: 95px; 
     top: 180px;
 }
+#zoneInterraction{
+
+    text-align: end;
+}
+
+#like {
+
+    width: 15px; 
+    height: 15px; 
+
+}
+
+#commentaire {
+
+    width: 15px; 
+    height: 15px; 
+
+}
+
+#share {
+
+    width: 15px; 
+    height: 15px; 
+
+}
 
 #zoneTweets {
     margin: 15px;
@@ -101,6 +126,7 @@ body {
     transition: background-color 0.3s ease, transform 0.3s ease;
     cursor: pointer;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    width: 400px;
 }
 
 .tweet:hover {
@@ -115,4 +141,10 @@ body {
 
 .tweet p {
     margin: 0;
+}
+
+.tweet:hover {
+    background-color: rgb(226, 85, 198);
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
