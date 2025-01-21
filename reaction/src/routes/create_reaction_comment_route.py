@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from services.ajouter_comment_reaction_service import add_reaction_to_comment
+from services.reaction_comment_service import add_reaction_to_comment
 
 create_comment_reaction_bp = Blueprint('create_comment_reaction_bp', __name__)
 
