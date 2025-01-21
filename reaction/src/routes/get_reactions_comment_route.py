@@ -3,7 +3,7 @@ from services.reaction_comment_service import add_reaction_to_comment
 
 comment_reaction_bp = Blueprint('comment_reaction_bp', __name__)
 
-@comment_reaction_bp.route('/comments/<int:comment_id>/reactions', methods=['POST'])
+@comment_reaction_bp.route('/comments/<comment_id>/reactions', methods=['POST'])
 def add_reaction(comment_id):
     """
     Route pour ajouter une réaction à un commentaire.
