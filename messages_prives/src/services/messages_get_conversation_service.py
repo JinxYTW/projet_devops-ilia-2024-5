@@ -1,8 +1,6 @@
-from database import get_messages  
- 
-messages = get_messages()
+from database.database import messages
 
-def get_messages(user1, user2):
+def get_conversation_messages(user1, user2):
     """
     Récupère les messages entre deux users
     """

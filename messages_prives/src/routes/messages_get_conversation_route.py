@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from services.messages_get_conversation_service import get_messages
+from services.messages_get_conversation_service import get_conversation_messages
 
 message_get_conversation_bp = Blueprint('message_get_conversation', __name__)
 
@@ -9,7 +9,7 @@ def retrieve_messages(user1, user2):
     Route pour récupérer les messages entre deux utilisateurs.
     """
     try:
-        messages = get_messages(user1, user2)
+        messages = get_conversation_messages(user1, user2)
         if not messages:
             return jsonify({"error": "Aucun message trouvé"}), 404
         return jsonify(messages), 200

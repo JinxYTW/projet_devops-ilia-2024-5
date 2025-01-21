@@ -1,9 +1,6 @@
 # Pour l'instant on simule un stockage des messages, nicopyright avance sur le stockage avec Redis en parallele
-messages = {}
-message_counter = 1
+messages = {
 
-def get_messages():
-    """
-    Retourne tous les messages
-    """
-    return messages, message_counter
+}
+
+message_counter = 1
