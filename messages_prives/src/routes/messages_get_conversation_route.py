@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify
 from services.messages_get_conversation_service import get_messages
 
-message_get_bp = Blueprint('message_get', __name__)
+message_get_conversation_bp = Blueprint('message_get_conversation', __name__)
 
-@message_get_bp.route('/messages/<user1>/<user2>', methods=['GET'])
+@message_get_conversation_bp.route('/messages/<user1>/<user2>', methods=['GET'])
 def retrieve_messages(user1, user2):
     """
     Route pour récupérer les messages entre deux utilisateurs.
