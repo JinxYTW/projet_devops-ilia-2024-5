@@ -2,7 +2,8 @@ import pytest
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/')))
+
 from app import create_app
 
 @pytest.fixture
@@ -21,7 +22,7 @@ def test_add_reaction(client):
 
     # Corps de la requête
     reaction_data = {
-        "userId": "12345",
+        "user_id": "12345",
         "reaction": "like"
     }
 

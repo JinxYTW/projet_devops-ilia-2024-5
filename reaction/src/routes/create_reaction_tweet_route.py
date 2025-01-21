@@ -1,18 +1,18 @@
 from flask import Blueprint, jsonify, request
 from services.reaction_tweet_service import add_tweet_reaction
 
-reaction_bp = Blueprint('reactions', __name__)
+reaction_bp = Blueprint('reaction_bp', __name__)
 
 @reaction_bp.route('/tweets/<int:tweet_id>/reactions', methods=['POST'])
 def add_reaction(tweet_id):
     try:
         # Récupérer les données de la requête
         data = request.get_json()
-        user_id = data.get('userId')
+        user_id = data.get('user_id')
         reaction = data.get('reaction')
 
         if not user_id or not reaction:
-            return jsonify({"error": "Les champs 'userId' et 'reaction' sont obligatoires."}), 400
+            return jsonify({"error": "Les champs 'user_id' et 'reaction' sont obligatoires."}), 400
 
         # Ajouter la réaction via le service
         success = add_tweet_reaction(tweet_id, user_id, reaction)

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
-from services.reaction_service import delete_reaction
+from services.delete_tweet_reaction_service import delete_reaction
 
-tweet_reaction_bp = Blueprint("tweet_reactions", __name__)
+tweet_reaction_bp = Blueprint("tweet_reaction_bp", __name__)
 
 @tweet_reaction_bp.route('/tweets/<int:tweet_id>/reactions/<int:reaction_id>', methods=['DELETE'])
 def delete_tweet_reaction(tweet_id, reaction_id):

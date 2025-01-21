@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from services.comment_service_get import get_comments
 
-comment_get_bp = Blueprint('comment_get', __name__)
+comment_get_bp = Blueprint('comment_get_bp', __name__)
 
 # Route pour récupérer les commentaires d'un tweet
 @comment_get_bp.route('/tweets/<tweet_id>/comments', methods=['GET'])

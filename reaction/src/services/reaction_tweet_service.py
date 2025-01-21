@@ -19,7 +19,7 @@ def add_tweet_reaction(tweet_id, user_id, reaction):
         reactions = eval(reactions)
 
     # Ajouter la nouvelle réaction
-    reactions.append({"userId": user_id, "reaction": reaction})
+    reactions.append({"user_id": user_id, "reaction": reaction})
 
     # Mettre à jour Redis
     client.set(key, str(reactions))
