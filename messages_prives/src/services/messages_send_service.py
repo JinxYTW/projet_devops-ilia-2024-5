@@ -1,6 +1,6 @@
-# Pour l'instant on simule un stockage des messages, nicopyright avance sur le stockage avec Redis en parallele
-messages = {}
-message_counter = 1
+from database import get_messages  
+ 
+messages, message_counter = get_messages()
 
 def send_message(sender, receiver, content):
     """
