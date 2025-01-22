@@ -9,8 +9,10 @@ on:
 env:
   PROJECT_ID: polytech-dijon
   REGION: europe-west1
-  GAR_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/authentification_service
-  WORKING_DIRECTORY: ./authentification
+  API_GAR_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/api_authentification_service
+  BDD_GAR_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/bdd_authentification_service
+  API_WORKING_DIRECTORY: ./authentification
+  BDD_WORKING_DIRECTORY: ./authentification/data
 
 jobs:
   build-push-api-artifact:
@@ -35,12 +37,12 @@ jobs:
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
       - name: Build image
-        run: docker build . --file Dockerfile --tag ${{ env.GAR_LOCATION }}
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: docker build . --file Dockerfile --tag ${{ env.API_GAR_LOCATION }}
+        working-directory: ${{ env.API_WORKING_DIRECTORY }}
 
       - name: Push image
-        run: docker push ${{ env.GAR_LOCATION }}
-  build-push-sql-artifact:
+        run: docker push ${{ env.API_GAR_LOCATION }}
+  build-push-bdd-artifact:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
@@ -62,8 +64,8 @@ jobs:
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
       - name: Build image
-        run: docker build . --file ./data/Dockerfile --tag ${{ env.GAR_LOCATION }}
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: docker build . --file Dockerfile --tag ${{ env.BDD_GAR_LOCATION }}
+        working-directory: ${{ env.BDD_WORKING_DIRECTORY }}
 
       - name: Push image
-        run: docker push ${{ env.GAR_LOCATION }}
+        run: docker push ${{ env.BDD_GAR_LOCATION }}
