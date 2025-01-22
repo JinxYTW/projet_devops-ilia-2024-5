@@ -122,19 +122,31 @@ body {
     grid-row: 1;
 }
 
-#posterOriginalProfil{
+#posteurOriginalProfil{
     
     margin-left: 15px;
     margin-right: 15px;
-    background-color: lightslategray;
+    border: 2px solid rgb(0, 0, 0);
+    height: 2000px;
+    padding: 15px;
+    padding-top: 20px;
     border-radius: 15px;
-    
+
 
     grid-column: 1/2;
     grid-row: 2/2;
 }
 
 #zonePostDetaille{
+
+    margin-left: 15px;
+    margin-right: 15px;
+    border: 2px solid rgb(0, 0, 0);
+    height: 2000px;
+    padding: 15px;
+    padding-top: 20px;
+    border-radius: 15px;
+
     grid-column: 2/2;
     grid-row: 2/2;
 }
