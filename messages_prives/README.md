@@ -182,32 +182,7 @@
   }
   ```  
 
-### Template 
- - Description : (...)
-##### Réquête client
-- URL :
-``` messages/... ```      
-- Méthode : ```POST - GET - DELETE - ...```
-- Content-Type : ``` ... ```
-- Body : 
-    ```yaml 
-    { 
-        param1: ...
-        param2: ...
-    }
-    ```      
-##### Réponse serveur
-- Code de réponse : 
-    ```yaml 
-    200 : OK
-    404 : ...
-    400 : ...
-    ...
-    ```    
-- Content-Type : ``` ... ```
-- Body : 
-    ```yaml 
-        { 
-            ...
-        }
-    ``` 
+## Analyse Trivy
+
+**Le résultat de l'analyse trivy se trouve directement dans le fichier `result-trivy.txt`.**
+Malheureusement je ne comprends pas comment changer l'encodage de sortie du résultat dans ce fichier.
