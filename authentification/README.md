@@ -31,11 +31,6 @@ Ce microservice gère la partie authentification de l'application, incluant la g
 └── README.md           # Documentation.
 ```
 
-## Prérequis
-- Python 3.9 ou supérieur.
-- Un gestionnaire de dépendances (pip ou poetry).
-- Docker (facultatif mais recommandé).
-
 ## Installation
 
 ### Installation locale
