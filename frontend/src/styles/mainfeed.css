@@ -81,30 +81,24 @@ body {
     right: 95px; 
     top: 180px;
 }
-#zoneInterraction{
 
+#zoneInterraction{
     text-align: end;
 }
 
 #like {
-
     width: 15px; 
     height: 15px; 
-
 }
 
 #commentaire {
-
     width: 15px; 
     height: 15px; 
-
 }
 
 #share {
-
     width: 15px; 
     height: 15px; 
-
 }
 
 #zoneTweets {
@@ -132,6 +126,7 @@ body {
 .tweet:hover {
     background-color: rgb(226, 85, 198);
     transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
 
 .tweet h3 {
@@ -141,10 +136,4 @@ body {
 
 .tweet p {
     margin: 0;
-}
-
-.tweet:hover {
-    background-color: rgb(226, 85, 198);
-    transform: scale(1.02);
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
