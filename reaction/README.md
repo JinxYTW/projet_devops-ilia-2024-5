@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # API pour la gestion des Commentaires et Réactions
 
 Ce projet offre une API permettant de gérer les commentaires et les réactions (ou "likes") sur des tweets. L'API suit une architecture RESTful, avec des routes dédiées à la gestion des commentaires et des réactions des utilisateurs.
@@ -907,4 +906,3 @@ def get_all_users():
 
 En suivant ce guide, l'équipe peut collaborer efficacement tout en garantissant la qualité et la cohérence du code.
 ```
->>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
