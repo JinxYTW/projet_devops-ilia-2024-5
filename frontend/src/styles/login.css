@@ -1,0 +1,61 @@
+body
+{
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+
+    display: flex;
+    flex-flow: row nowrap;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#login-box
+{
+    display: flex;
+    flex-flow: column nowrap;
+
+    align-items: center;
+
+    padding: 4vh;
+
+    background-color: #ede7b1;
+    border-radius: 10px;
+}
+
+#id-field-box
+{
+    display: flex;
+    flex-flow: column nowrap;
+
+    align-items: center;
+    padding-bottom: 5vh;
+}
+
+#id-field-box *
+{
+    margin: 0;
+}
+
+#fields
+{
+    margin-bottom: 8vh;
+}
+
+
+#test
+{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.inline-bar
+{
+    flex-grow: 1;
+
+    height: 1px;
+    min-width: 20px;
+    background-color: dimgrey;
+}
