@@ -1,3 +1,105 @@
+# Table des Matières
+
+- [Accès à l'Application et Tests](#accès-à-lapplication-et-tests)
+  - [Démarrage de l'Application](#démarrage-de-lapplication)
+  - [Documentation Swagger](#documentation-swagger)
+  - [Exécution des Tests](#exécution-des-tests)
+
+- [API pour la gestion des Commentaires et Réactions](#api-pour-la-gestion-des-commentaires-et-réactions)
+  - [Routes](#routes)
+    - [Commentaires](#commentaires)
+      - [Créer un commentaire sur un tweet](#créer-un-commentaire-sur-un-tweet)
+      - [Récupérer les commentaires d’un tweet](#récupérer-les-commentaires-dun-tweet)
+      - [Modifier un commentaire](#modifier-un-commentaire)
+      - [Supprimer un commentaire](#supprimer-un-commentaire)
+    - [Réactions](#réactions)
+      - [Ajouter une réaction à un tweet](#ajouter-une-réaction-à-un-tweet)
+      - [Ajouter une réaction à un commentaire](#ajouter-une-réaction-à-un-commentaire)
+      - [Récupérer les réactions d’un tweet](#récupérer-les-réactions-dun-tweet)
+      - [Récupérer les réactions d’un commentaire](#récupérer-les-réactions-dun-commentaire)
+      - [Supprimer une réaction sur un tweet](#supprimer-une-réaction-sur-un-tweet)
+      - [Supprimer une réaction sur un commentaire](#supprimer-une-réaction-sur-un-commentaire)
+    - [Statistiques et Suivi](#statistiques-et-suivi)
+      - [Récupérer les statistiques de réactions sur un tweet](#récupérer-les-statistiques-de-réactions-sur-un-tweet)
+      - [Récupérer les statistiques de réactions sur un commentaire](#récupérer-les-statistiques-de-réactions-sur-un-commentaire)
+    - [Authentification et Autorisation](#authentification-et-autorisation)
+      - [Vérifier si un utilisateur a déjà réagi avec une réaction spécifique](#vérifier-si-un-utilisateur-a-déjà-réagi-avec-une-réaction-spécifique)
+  - [Types de Réactions](#types-de-réactions)
+  - [Conclusion](#conclusion)
+
+- [Structure de Base de Données Redis](#structure-de-base-de-données-redis)
+  - [Structure des Données](#structure-des-données)
+    - [Commenter un tweet](#commenter-un-tweet)
+    - [Commenter un commentaire](#commenter-un-commentaire)
+    - [Réactions aux Tweets](#réactions-aux-tweets)
+    - [Réactions aux Commentaires](#réactions-aux-commentaires)
+    - [Utilisateurs ayant Réagi](#utilisateurs-ayant-réagi)
+  - [Cas d'Usage et Opérations](#cas-dusage-et-opérations)
+
+- [Guide de Contribution](#guide-de-contribution)
+  - [Gestion des Tâches avec des Issues](#gestion-des-tâches-avec-des-issues)
+    - [Création d’une Issue](#création-dune-issue)
+  - [Création d'une Branche Associée](#création-dune-branche-associée)
+  - [Développement Basé sur le TDD](#développement-basé-sur-le-tdd)
+    - [Écriture des Tests Avant Développement](#écriture-des-tests-avant-développement)
+    - [Exécution des Tests](#exécution-des-tests)
+  - [Codage](#codage)
+    - [Structure des Fichiers](#structure-des-fichiers)
+    - [Intégration de Redis](#intégration-de-redis)
+    - [Exemple de Code](#exemple-de-code)
+    - [Règles de Codage](#règles-de-codage)
+  - [Pull Request (PR)](#pull-request-pr)
+    - [Création d'une PR](#création-dune-pr)
+    - [Revue et Fusion](#revue-et-fusion)
+  - [Bonnes Pratiques](#bonnes-pratiques)
+
+
+
+
+
+
+# Accès à l'Application et Tests
+
+## Démarrage de l'Application
+Assurez-vous d'être dans le dossier reaction :
+
+```bash
+cd reaction/
+```
+
+Pour démarrer l'application, assurez-vous que vous n'avez un service en cours qui utilise les ports 5000 (pour notre api), 6379 (pour notre db redis) et 80 (pour notre doc swagger) et ensuite exécutez la commande suivante :
+
+```bash
+docker-compose up --build
+```
+
+Une fois démarrée, l'application sera accessible à l'adresse suivante :
+
+- **Base URL de l'application**: [http://localhost:5000/](http://localhost:5000/)
+
+
+
+## Documentation Swagger
+
+La documentation Swagger de l'API est disponible à l'adresse suivante :
+
+- **Lien Swagger**: [http://localhost/reactions/api/swagger/](http://localhost/reactions/api/swagger/)
+
+
+
+## Exécution des Tests
+
+Pour exécuter les tests, utilisez la commande suivante :
+
+```bash
+docker-compose -f docker-compose.test.yml up --build
+```
+
+Cette commande construira et lancera les conteneurs nécessaires à l'exécution des tests et exécuter automatiquement les tests.
+
+
+
+
 # API pour la gestion des Commentaires et Réactions
 
 Ce projet offre une API permettant de gérer les commentaires et les réactions (ou "likes") sur des tweets. L'API suit une architecture RESTful, avec des routes dédiées à la gestion des commentaires et des réactions des utilisateurs.
@@ -7,25 +109,25 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 ### 1. **Commentaires**
 
 #### Créer un commentaire sur un tweet
-- **Route** : `POST /tweets/{tweetId}/comments`
+- **Route** : `POST /tweets/{tweet_id}/comments`
 - **Description** : Permet à un utilisateur d’ajouter un commentaire à un tweet.
 - **Corps de la requête** :
     ```json
     {
-      "userId": "12345",
+      "user_id": "12345",
       "content": "Ceci est un commentaire."
     }
     ```
 
 #### Récupérer les commentaires d’un tweet
-- **Route** : `GET /tweets/{tweetId}/comments`
+- **Route** : `GET /tweets/{tweet_id}/comments`
 - **Description** : Récupère tous les commentaires associés à un tweet spécifique.
 - **Réponse** :
     ```json
     [
       {
-        "commentId": "67890",
-        "userId": "12345",
+        "comment_id": "67890",
+        "user_id": "12345",
         "content": "Ceci est un commentaire.",
         "created_at": "2023-01-10T12:34:56Z"
       }
@@ -33,7 +135,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Modifier un commentaire
-- **Route** : `PUT /comments/{commentId}`
+- **Route** : `PUT /comments/{comment_id}`
 - **Description** : Permet à un utilisateur de modifier son commentaire.
 - **Corps de la requête** :
     ```json
@@ -43,7 +145,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Supprimer un commentaire
-- **Route** : `DELETE /comments/{commentId}`
+- **Route** : `DELETE /comments/{comment_id}`
 - **Description** : Permet à un utilisateur de supprimer son commentaire.
 - **Réponse** :
     ```json
@@ -55,36 +157,36 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 ### 2. **Réactions**
 
 #### Ajouter une réaction à un tweet
-- **Route** : `POST /tweets/{tweetId}/reactions`
+- **Route** : `POST /tweets/{tweet_id}/reactions`
 - **Description** : Permet à un utilisateur d’ajouter une réaction à un tweet.
 - **Corps de la requête** :
     ```json
     {
-      "userId": "12345",
+      "user_id": "12345",
       "reaction": "like"
     }
     ```
 
 #### Ajouter une réaction à un commentaire
-- **Route** : `POST /comments/{commentId}/reactions`
+- **Route** : `POST /comments/{comment_id}/reactions`
 - **Description** : Permet à un utilisateur d’ajouter une réaction à un commentaire.
 - **Corps de la requête** :
     ```json
     {
-      "userId": "12345",
+      "user_id": "12345",
       "reaction": "love"
     }
     ```
 
 #### Récupérer les réactions d’un tweet
-- **Route** : `GET /tweets/{tweetId}/reactions`
+- **Route** : `GET /tweets/{tweet_id}/reactions`
 - **Description** : Récupère toutes les réactions d’un tweet.
 - **Réponse** :
     ```json
     [
       {
-        "reactionId": "11111",
-        "userId": "12345",
+        "reaction_id": "11111",
+        "user_id": "12345",
         "reaction": "haha",
         "created_at": "2023-01-10T12:45:00Z"
       }
@@ -92,14 +194,14 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Récupérer les réactions d’un commentaire
-- **Route** : `GET /comments/{commentId}/reactions`
+- **Route** : `GET /comments/{comment_id}/reactions`
 - **Description** : Récupère toutes les réactions d’un commentaire.
 - **Réponse** :
     ```json
     [
       {
-        "reactionId": "22222",
-        "userId": "67890",
+        "reaction_id": "22222",
+        "user_id": "67890",
         "reaction": "love",
         "created_at": "2023-01-10T12:50:00Z"
       }
@@ -107,7 +209,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Supprimer une réaction sur un tweet
-- **Route** : `DELETE /tweets/{tweetId}/reactions/{reactionId}`
+- **Route** : `DELETE /tweets/{tweet_id}/reactions/{reaction_id}`
 - **Description** : Permet à un utilisateur de supprimer une réaction sur un tweet.
 - **Réponse** :
     ```json
@@ -117,7 +219,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Supprimer une réaction sur un commentaire
-- **Route** : `DELETE /comments/{commentId}/reactions/{reactionId}`
+- **Route** : `DELETE /comments/{comment_id}/reactions/{reaction_id}`
 - **Description** : Permet à un utilisateur de supprimer une réaction sur un commentaire.
 - **Réponse** :
     ```json
@@ -129,7 +231,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 ### 3. **Statistiques et Suivi**
 
 #### Récupérer les statistiques de réactions sur un tweet
-- **Route** : `GET /tweets/{tweetId}/reactions/stats`
+- **Route** : `GET /tweets/{tweet_id}/reactions/stats`
 - **Description** : Récupère des statistiques sur les différentes réactions (nombre de chaque type de réaction) d’un tweet.
 - **Réponse** :
     ```json
@@ -140,7 +242,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Supprimer une réaction sur un tweet
-- **Route** : `DELETE /tweets/{tweetId}/reactions/{reactionId}`
+- **Route** : `DELETE /tweets/{tweet_id}/reactions/{reaction_id}`
 - **Description** : Permet à un utilisateur de supprimer une réaction sur un tweet.
 - **Réponse** :
     ```json
@@ -150,7 +252,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Supprimer une réaction sur un commentaire
-- **Route** : `DELETE /comments/{commentId}/reactions/{reactionId}`
+- **Route** : `DELETE /comments/{comment_id}/reactions/{reaction_id}`
 - **Description** : Permet à un utilisateur de supprimer une réaction sur un commentaire.
 - **Réponse** :
     ```json
@@ -160,7 +262,7 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
     ```
 
 #### Récupérer les statistiques de réactions sur un commentaire
-- **Route** : `GET /comments/{commentId}/reactions/stats`
+- **Route** : `GET /comments/{comment_id}/reactions/stats`
 - **Description** : Récupère des statistiques sur les différentes réactions (nombre de chaque type de réaction) d’un commentaire.
 - **Réponse** :
     ```json
@@ -173,12 +275,12 @@ Ce projet offre une API permettant de gérer les commentaires et les réactions 
 ### 4. **Authentification et Autorisation**
 
 #### Vérifier si un utilisateur a déjà réagi avec une réaction spécifique
-- **Route** : `GET /tweets/{tweetId}/reactions/{userId}`
+- **Route** : `GET /tweets/{tweet_id}/reactions/{user_id}`
 - **Description** : Vérifie si un utilisateur spécifique a déjà réagi à un tweet avec une réaction particulière.
 - **Réponse** :
     ```json
     {
-      "hasReacted": true,
+      "has_reacted": true,
       "reaction": "like"
     }
     ```
@@ -199,8 +301,7 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 
 
 
-############################################ BD ################################################
-# Proposition de Structure de Base de Données Redis pour le Micro-Service de Réactions Twitter
+# Structure de Base de Données Redis
 
 #### **1. Structure des Données**
 
@@ -291,7 +392,7 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
     ```json
     {
       "reacted_user": "user456",
-      "reaction": "haha", "love", "like"...,
+      "reaction": "haha", "love", "like", ...
       "created_at": "2025-01-10T10:05:00Z"
     }
     ```
@@ -327,3 +428,151 @@ Cette API permet de gérer les interactions autour des tweets et des commentaire
 
 
 
+
+
+# Guide de Contribution au Développement de l'API Web de Réaction à un Tweet
+
+Ce guide détaille les processus à suivre pour contribuer efficacement au développement de notre API, incluant l'intégration de Redis pour la gestion du db. Il couvre la gestion des tâches via les issues, la création de branches, le développement basé sur le Test-Driven Development (TDD), et la soumission de Pull Requests (PR).
+
+## 1. Gestion des Tâches avec des Issues
+
+### Création d’une Issue
+1. **Définir la tâche** : Pour chaque nouvelle fonctionnalité ou correction de bug, créez une issue dans GitHub.
+2. **Nom de l’issue** : Utilisez un titre clair et descriptif, tel que "Ajouter une route pour récupérer les utilisateurs".
+3. **Description** : Incluez les spécifications détaillées, y compris les endpoints, les méthodes HTTP, et la logique métier attendue.
+4. **Assignation** : Assignez l'issue à vous-même.
+
+## 2. Création d'une Branche Associée
+
+### Création de la Branche
+1. **Utilisation du bouton GitHub** : Une fois l'issue créée, utilisez le bouton proposé par GitHub pour créer une branche associée.
+2. **Convention de Nom des Branches** : Suivez le format `issue-[numéro]-[description]`, par exemple `issue-12-get-users-route`.
+
+## 3. Développement Basé sur le TDD
+
+### Écriture des Tests Avant Développement
+1. **Fichier de Test** : Écrivez d'abord les tests pour chaque fonctionnalité dans le répertoire `tests/`.
+   - Exemple : `tests/test_user_routes.py` pour les routes des utilisateurs.
+2. **Structure des Tests** : Utilisez `pytest`. Chaque fichier de test doit couvrir les cas de test pour la fonctionnalité correspondante.
+
+#### Exemple de Test (`tests/test_user_routes.py`)
+```python
+import pytest
+from app import create_app
+
+@pytest.fixture
+def client():
+    app = create_app()
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_get_users(client):
+    response = client.get('/users')
+    assert response.status_code == 200
+    assert isinstance(response.json, list)
+```
+
+### Exécution des Tests
+1. **Lancer les Tests** : Assurez-vous que les tests échouent initialement, puis développez la fonctionnalité pour qu'ils passent.
+   ```bash
+   pytest tests/
+   ```
+
+## 4. Codage
+
+### Structure des Fichiers
+1. **Routes** : Chaque fichier de route se trouve dans `routes/` et contient les Blueprints et définitions des routes.
+   - Exemple : `routes/user_routes.py` pour les routes utilisateurs.
+2. **Services** : Placez la logique métier dans `services/`.
+   - Exemple : `services/user_service.py` pour les services liés aux utilisateurs.
+
+### Intégration de Redis
+1. **Configuration de Redis** : Assurez-vous que Redis est installé et en cours d'exécution. Configurez l'application pour utiliser Redis comme base de données.
+2. **Exemple de Connexion à Redis** :
+   - Créez un fichier `db/redis_client.py` :
+     ```python
+     import redis
+
+     def get_redis_client():
+         return redis.Redis(host='localhost', port=6379, db=0)
+     ```
+3. **Utilisation de Redis dans un Service** :
+   - Exemple dans `services/user_service.py` :
+     ```python
+     from db.redis_client import get_redis_client
+
+     def get_all_users():
+         client = get_redis_client()
+         users = client.get('users')
+         if users is None:
+             # Simuler une récupération de la base de données
+             users = []
+         else:
+             users = eval(users)
+         return users
+     ```
+
+### Exemple de Code
+
+#### Routes (`routes/user_routes.py`)
+```python
+from flask import Blueprint, jsonify
+from app.services.user_service import get_all_users
+
+user_bp = Blueprint('user', __name__)
+
+@user_bp.route('/users', methods=['GET'])
+def get_users():
+    users = get_all_users()
+    return jsonify(users), 200
+```
+
+#### Services (`services/user_service.py`)
+```python
+from db.redis_client import get_redis_client
+
+def get_all_users():
+    client = get_redis_client()
+    users = client.get('users')
+    if users is None:
+        # Exemple de données statiques (à remplacer par une requête à la base de données)
+        users = []
+    else:
+        users = eval(users)
+    return users
+```
+
+### Règles de Codage
+1. **Séparation des Responsabilités** : 
+   - Les **routes** gèrent les requêtes et réponses.
+   - Les **services** contiennent la logique métier.
+2. **Tests** : Testez localement votre code avant de soumettre une PR.
+
+## 5. Pull Request (PR)
+
+### Création d'une PR
+1. **Push de la Branche** :
+   ```bash
+   git push origin issue-12-get-users-route
+   ```
+2. **Ouvrir une PR** : 
+   - Créez une PR sur GitHub depuis votre branche vers la branche principale.
+   - **Titre** : Utilisez le format `[Issue #12] Ajout de la route GET /users`.
+   - **Description** : Décrivez les modifications apportées et incluez les détails pertinents.
+
+### Revue et Fusion
+1. **Revue de Code** : Une autre personne doit approuver la PR.
+2. **Tests** : Vérifiez que tous les tests passent avant de fusionner.
+3. **Fusion** : Fusionnez la PR une fois approuvée.
+
+## 6. Bonnes Pratiques
+- **Messages de Commit** : Soyez précis et utilisez un format cohérent.
+  - Exemple : `feat: Ajout de la route GET /users`
+- **Mise à Jour des Branches** : Maintenez votre branche à jour avec la branche principale.
+   ```bash
+   git pull origin main
+   ```
+
+En suivant ce guide, l'équipe peut collaborer efficacement tout en garantissant la qualité et la cohérence du code.
+```
