@@ -11,33 +11,25 @@ Ce microservice gère la partie authentification de l'application, incluant la g
 - **Gestion des autorisations** : Vérification des rôles et permissions des utilisateurs pour l'accès à certaines routes.
 
 ## Architecture
-Le microservice suit une architecture modulaire et respecte les principes RESTful. Voici les composants principaux :
+ Voici les composants principaux :
 
 ```
-nom-microservice/
+
 ├── src/
+│   ├── models/
 │   ├── __init__.py
+│   ├── config.py
 │   ├── main.py        # Point d'entrée de l'application.
 │   ├── utils.py       # Fonctions utilitaires (hachage, vérification des tokens).
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   ├── auth_routes.py  # Définition des routes d'authentification.
-│   ├── models/
-│       ├── __init__.py
-│       ├── user_model.py   # Modèle utilisateur.
+│   ├── routes.py
 ├── tests/
-│   ├── test_auth.py    # Tests des fonctionnalités d'authentification.
-│   ├── test_tokens.py  # Tests des tokens JWT.
+│   ├── truc.txt
 ├── requirements.txt
+├── docker-compose.yaml
 ├── swagger.yaml        # Documentation des routes.
 ├── Dockerfile          # Conteneurisation du microservice.
 └── README.md           # Documentation.
 ```
-
-## Prérequis
-- Python 3.9 ou supérieur.
-- Un gestionnaire de dépendances (pip ou poetry).
-- Docker (facultatif mais recommandé).
 
 ## Installation
 
