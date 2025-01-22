@@ -19,7 +19,8 @@ db_name = os.getenv("DATABASE_NAME", "polytex")
 app.config['SQLALCHEMY_DATABASE_URI'] =f"mysql+pymysql://{db_user}:{db_password}@{db_ip}:{db_port}/{db_name}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "super-secret")
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
+# TODO app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=99)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=1)
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
