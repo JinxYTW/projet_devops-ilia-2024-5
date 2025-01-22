@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS polytex;
 USE polytex;
 
 DROP TABLE users;
