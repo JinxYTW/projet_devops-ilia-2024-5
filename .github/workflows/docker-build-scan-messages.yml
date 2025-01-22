@@ -1,0 +1,36 @@
+name: Build and Scan Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t messages-service:latest .
+
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          image-ref: messages-service:latest
+          format: table
+          output: trivy-results.txt
+
+      - name: Upload Trivy report
+        uses: actions/upload-artifact@v3
+        with:
+          name: trivy-results
+          path: trivy-results.txt
