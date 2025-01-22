@@ -29,5 +29,5 @@ async function register(firstName, lastName, email, pseudo, password)
         password: password
     };
 
-    await fetch("https://api.example.com/auth/sign_in", {method : "POST", body: JSON.stringify(request)});
+    await fetch("https://authentification.polytex.com/auth/sign_in", {method : "POST", body: JSON.stringify(request)});
 }

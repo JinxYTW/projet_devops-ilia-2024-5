@@ -21,5 +21,5 @@ async function login(pseudo, password)
         password: password
     };
 
-    await fetch("https://api.example.com/auth/login", {method : "POST", body: JSON.stringify(request)});
+    await fetch("https://authentification.polytex.com/auth/login", {method : "POST", body: JSON.stringify(request)});
 }
