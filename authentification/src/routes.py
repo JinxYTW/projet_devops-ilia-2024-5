@@ -19,8 +19,8 @@ def sign_in():
     if not data:
         return jsonify({"message": "Données manquantes"}), 400
 
-    nom = data.get("nom")
-    prenom = data.get("prenom")
+    nom = data.get("lastName")
+    prenom = data.get("firstName")
     email = data.get("email")
     password = data.get("password")
     username = data.get("username")
@@ -29,8 +29,10 @@ def sign_in():
     if not all([nom, prenom, email, password, username, pseudo]):
         return jsonify({"message": "Tous les champs sont obligatoires"}), 400
 
-    if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
-        return jsonify({"message": "Nom d'utilisateur ou email déjà utilisé"}), 409
+    if User.query.filter_by(username=username).first():
+        return jsonify({"message": "Nom d'utilisateur déjà utilisé"}), 409
+    elif  User.query.filter_by(email=email).first():
+        return jsonify({"message": "Email déjà utilisé"}), 409
 
     new_user = User(last_name=nom, first_name=prenom, email=email, password=password, username=username, pseudo=pseudo)
     db.session.add(new_user)
@@ -51,7 +53,7 @@ def login():
     elif not email and username:
         id = username
     else:
-         return jsonify({"message": "Nom d'utilisateur requis"}), 400
+         return jsonify({"message": "Nom d'utilisateur (ou l'email) requis"}), 400
 
     password = data.get("password")
 
@@ -68,14 +70,19 @@ def login():
 
 # Endpoint pour récupérer les informations d'un utilisateur
 @route.route("/users/<username>", methods=["GET"])
-@jwt_required()
+@jwt_required(optional=True)
 def get_user(username):
     user = User.query.filter_by(username=username).first()
     if not user:
         return jsonify({"message": "Utilisateur non trouvé"}), 404
 
-    return jsonify(user.to_dict()), 200
-
+    current_identity = get_jwt_identity()
+    if current_identity:
+        if current_identity != username:
+            return jsonify({"message": "Accès non autorisé"}), 403
+        return jsonify(user.to_dict()), 200
+    else:
+        return jsonify(user.to_dict_min()), 200
 
 # Endpoint pour supprimer un utilisateur
 @route.route("/users/<username>", methods=["DELETE"])

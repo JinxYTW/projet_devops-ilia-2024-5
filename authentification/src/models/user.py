@@ -13,9 +13,15 @@ class User(db.Model):
 
     def to_dict(self):
         return {
-            "nom": self.last_name,
-            "prenom": self.first_name,
+            "username": self.username,
+            "lastName": self.last_name,
+            "firstName": self.first_name,
             "email": self.email,
+            "pseudo": self.pseudo
+        }
+    
+    def to_dict_min(self):
+        return {
             "username": self.username,
             "pseudo": self.pseudo
         }
