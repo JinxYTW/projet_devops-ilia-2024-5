@@ -12,6 +12,7 @@ paths:
       summary: Permet de connecter l'utilisateur
       description: Permet de connecter l'utilisateur et de récupérer le token de connexion
       parameters:
+
         - name: username
           in: query
           description: Le nom d'utilisateur qui veut se connecter

@@ -1,10 +1,16 @@
 import pytest
 from flask import json
-from models.example_model import User
+
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src')))
+
+from models.user import User
 
 def test_login_success(client, test_user):
     response = client.post('/auth/login', json={
-        "username_or_email": "johndoe",
+        "username": "johndoe",
         "password": "password123"
     })
     assert response.status_code == 200
@@ -13,7 +19,7 @@ def test_login_success(client, test_user):
 
 def test_login_invalid_credentials(client):
     response = client.post('/auth/login', json={
-        "username_or_email": "fakeuser",
+        "username": "fakeuser",
         "password": "wrongpassword"
     })
     assert response.status_code == 401

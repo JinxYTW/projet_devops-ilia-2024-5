@@ -31,7 +31,7 @@ services:
     networks:
       authentification_network:
         ipv4_address: 192.168.1.3
-        
+
 volumes:
   mysql-data:
 
@@ -40,4 +40,3 @@ networks:
     ipam:
       config:
         - subnet: 192.168.1.0/29
-

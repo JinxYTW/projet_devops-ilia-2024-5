@@ -5,6 +5,7 @@ ENV MYSQL_ROOT_PASSWORD=root
 ENV MYSQL_DATABASE=polytex
 
 # Copier le script SQL dans le conteneur
+
 COPY ./bdd.sql /docker-entrypoint-initdb.d/
 
 # Exposer le port MySQL

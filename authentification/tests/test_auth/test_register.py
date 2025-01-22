@@ -1,11 +1,17 @@
 import pytest
 from flask import json
-from models.example_model import User
+
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src')))
+from models.user import User
+
 
 def test_register_success(client):
     response = client.post('/auth/sign_in', json={
-        "nom": "Doe",
-        "prenom": "John",
+        "lastName": "Doe",
+        "firstName": "John",
         "email": "john@example.com",
         "password": "password123",
         "username": "johndoe",
@@ -17,8 +23,8 @@ def test_register_success(client):
 
 def test_register_duplicate_user(client, test_user):
     response = client.post('/auth/sign_in', json={
-        "nom": "Doe",
-        "prenom": "Jane",
+        "lastName": "Doe",
+        "firstName": "Jane",
         "email": "jane@example.com",
         "password": "password123",
         "username": "johndoe",  # Nom d'utilisateur déjà pris

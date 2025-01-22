@@ -576,3 +576,4 @@ def get_all_users():
 
 En suivant ce guide, l'équipe peut collaborer efficacement tout en garantissant la qualité et la cohérence du code.
 ```
+

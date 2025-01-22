@@ -1,35 +1,41 @@
 import pytest
-from models.example_model import User
+
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src')))
+
+from models.user import User
 from config import db
 
 def test_user_creation():
     user = User(
-        nom="Doe",
-        prenom="John",
+        last_name="Doe",
+        first_name="John",
         email="john@example.com",
-        password="password123",
         username="johndoe",
         pseudo="jd"
     )
-    assert user.nom == "Doe"
-    assert user.prenom == "John"
+    user.set_password("password123")
+    assert user.last_name == "Doe"
+    assert user.first_name == "John"
     assert user.email == "john@example.com"
     assert user.username == "johndoe"
     assert user.pseudo == "jd"
-    assert user.password == "password123"
+    assert user.check_password("password123")
 
 def test_user_to_dict():
     user = User(
-        nom="Doe",
-        prenom="John",
+        last_name="Doe",
+        first_name="John",
         email="john@example.com",
-        password="password123",
         username="johndoe",
         pseudo="jd"
     )
+    user.set_password("password123")
     user_dict = user.to_dict()
-    assert user_dict["nom"] == "Doe"
-    assert user_dict["prenom"] == "John"
+    assert user_dict["lastName"] == "Doe"
+    assert user_dict["firstName"] == "John"
     assert user_dict["email"] == "john@example.com"
     assert user_dict["username"] == "johndoe"
     assert user_dict["pseudo"] == "jd"

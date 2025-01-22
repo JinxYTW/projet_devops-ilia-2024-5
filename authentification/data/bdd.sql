@@ -1,6 +1,7 @@
+CREATE DATABASE IF NOT EXISTS polytex;
 USE polytex;
 
-DROP TABLE users;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     username VARCHAR(50) NOT NULL PRIMARY KEY,
