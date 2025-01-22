@@ -26,11 +26,14 @@ def test_get_comment_reaction_stats(client, redis_client):
     comment_id = "67890"
 
     # Simuler les statistiques des réactions dans Redis
-    redis_client.hset(f"comment:{comment_id}:reactions_stat", mapping={
-        "like": 3,
-        "love": 1,
-        "angry": 2
-    })
+    redis_client.rpush(f"reactions:comments:{comment_id}", *[
+        '{"reaction": "like"}',
+        '{"reaction": "like"}',
+        '{"reaction": "like"}',
+        '{"reaction": "love"}',
+        '{"reaction": "angry"}',
+        '{"reaction": "angry"}'
+    ])
 
     # Envoyer une requête GET à la route
     response = client.get(f'/comments/{comment_id}/reactions/stats')
