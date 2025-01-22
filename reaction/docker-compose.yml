@@ -1,0 +1,29 @@
+version: '3.8'
+
+
+services:
+  app:
+    build:
+      context: ./src
+    ports:
+      - "5000:5000"
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+  
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379" # Expose le port 6379 du conteneur sur le port 6379 de l'hôte
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "80:8080"  # Expose le port 8080 du conteneur sur le port 80 de l'hôte
+    environment:
+      - BASE_URL=/reactions/api/swagger  # Spécifie le chemin de base
+      - SWAGGER_JSON=/foo/swagger.yaml   # Chemin du fichier Swagger dans le conteneur
+    volumes:
+      - ./swagger.yaml:/foo/swagger.yaml  # Monte le fichier swagger.yaml dans le conteneur

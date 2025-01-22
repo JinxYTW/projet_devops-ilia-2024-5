@@ -12,13 +12,26 @@ paths:
       summary: Permet de connecter l'utilisateur
       description: Permet de connecter l'utilisateur et de récupérer le token de connexion
       parameters:
+<<<<<<< HEAD
         - name: userName
+=======
+        - name: username
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           in: query
           description: Le nom d'utilisateur qui veut se connecter
           required: true
           schema:
             type: string
 
+<<<<<<< HEAD
+=======
+        - name: email
+          in: query
+          description: L'email du compte dont on veut se connecter (option alternative)
+          schema:
+            type: string
+
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
         - name: password
           in: query
           description: Le mot de passe lié au compte
@@ -36,6 +49,12 @@ paths:
                   token:
                     type: string
                     example: "t0k3n"
+<<<<<<< HEAD
+=======
+        '400':
+          description: L'identifiant (ou l'email) ou le mot de passe est manquant
+        
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
         '401':
           description: Mauvais identifiants fournis
   /auth/sign_in:
@@ -66,16 +85,35 @@ paths:
           schema:
             type: string
 
+<<<<<<< HEAD
         - name: userName
+          in: query
+          description: Le nom d'utilisateur du nouveau utilisateur
+=======
+        - name: password
+          in: query
+          description: Le mot de passe du nouveau utilisateur
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
+          required: true
+          schema:
+            type: string
+
+<<<<<<< HEAD
+        - name: password
+          in: query
+          description: Le mot de passe du nouveau utilisateur
+=======
+        - name: username
           in: query
           description: Le nom d'utilisateur du nouveau utilisateur
           required: true
           schema:
             type: string
-
-        - name: password
+            
+        - name: pseudo
           in: query
-          description: Le mot de passe du nouveau utilisateur
+          description: Le pseudo du nouveau utilisateur
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           required: true
           schema:
             type: string
@@ -83,31 +121,63 @@ paths:
       responses:
         '200':
           description: OK L'utilisateur à été crée
+<<<<<<< HEAD
         '401':
           description: Mauvais identifiants fournis
   
   /users/{userName}:
+=======
+        '400':
+          description: Un des champs obligatoire est manquant
+        '409':
+          description: Le nom d'utilisateur ou l'email est déjà utilisé
+  
+  /users/{username}:
+    
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
     get:
       tags:
       -  Gestion des utilisateurs
       summary: Permet de récupérer les informations d'un utilisateur
+<<<<<<< HEAD
       description: Permet de récupérer les informations d'un utilisateur à partir de son nom d'utilisateur
       parameters:
         - name: userName
+=======
+      description: Permet de récupérer le pseudo et le nom d'utilisateur avec une requête sans token. <br> Si le token est présent, cela donne toutes les informations de l'utilisateur (sauf le mot de passe).
+      parameters:
+        - name: username
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           in: path
           description: Le nom d'utilisateur de l'utilisateur dont on veut
           required: true
           schema:
+<<<<<<< HEAD
             type: string  
   
       responses:
         '200':
           description: OK L'utilisateur est crée
+=======
+            type: string
+            
+        - name: token
+          in: query
+          description: Le token pour avoir tous les informations sur l'utilisateur
+          schema:
+            type: string
+        
+  
+      responses:
+        '200':
+          description: L'utilisateur a été trouvé
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           content:
             application/json:
               schema:
                 type: object
                 properties:
+<<<<<<< HEAD
                   userName:
                     type: string
                     example: "us3r"
@@ -125,6 +195,37 @@ paths:
                     example: "us3rl3thug"
         '401':
           description: Token non valide
+=======
+                  username:
+                    type: string
+                  lastName:
+                    type: string
+                    nullable: true
+                  firstName:
+                    type: string
+                    nullable: true
+                  email:
+                    type: string
+                    nullable: true
+                  pseudo:
+                    type: string
+              examples:
+                avecToken:
+                  summary: "Avec token"
+                  value:
+                    username: "us3r"
+                    lastName: "Dupont"
+                    firstName: "Patrice"
+                    email: "email@example.com"
+                    pseudo: "us3rl3thug"
+                sansToken:
+                  summary: "Sans token"
+                  value:
+                    username: "us3r"
+                    pseudo: "us3rl3thug"
+        '403':
+          description: Accès avec un token non autorisé
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
         '404':
           description: L'utilisateur n'existe pas
 
@@ -136,7 +237,11 @@ paths:
       summary: Permet de supprimer un utilisateur
       description: Permet de supprimer un utilisateur à partir de son nom d'utilisateur
       parameters:
+<<<<<<< HEAD
         - name: userName
+=======
+        - name: username
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           in: path
           description: Le nom d'utilisateur de l'utilisateur dont on veut
           required: true
@@ -153,8 +258,14 @@ paths:
       responses:
         '200': 
           description: OK L'utilisateur est supprimé
+<<<<<<< HEAD
         '401':
           description: Token non valide
+=======
+
+        '403':
+          description: Accès avec un token non autorisé
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
         '404':
           description: L'utilisateur n'existe pas
         '500':
@@ -167,7 +278,11 @@ paths:
       summary: Permet de modifier les informations d'un utilisateur
       description: Permet de modifier les informations d'un utilisateur à partir de son nom d'utilisateur
       parameters:
+<<<<<<< HEAD
         - name: userName
+=======
+        - name: username
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           in: path
           description: Le nom d'utilisateur de l'utilisateur dont on veut
           required: true
@@ -192,7 +307,11 @@ paths:
           schema:
             type: string
 
+<<<<<<< HEAD
         - name: userName
+=======
+        - name: username
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
           in: query
           description: Le nom d'utilisateur du nouveau utilisateur
           schema:
@@ -214,6 +333,7 @@ paths:
       responses:
         '200': 
           description: OK L'utilisateur est supprimé
+<<<<<<< HEAD
         '401':
           description: Token non valide
         '404':
@@ -222,3 +342,11 @@ paths:
           description: Erreur interne au serveur
 
     
+=======
+        '403':
+          description: Accès avec un token non autorisé
+        '404':
+          description: L'utilisateur n'existe pas
+        '500':
+          description: Erreur interne au serveur
+>>>>>>> a923ddb4265fa7fb55e2cf1284655155a0c2f14a
